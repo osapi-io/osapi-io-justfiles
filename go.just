@@ -49,9 +49,9 @@ init:
 # Module maintenance (download + tidy)
 [group: 'setup']
 mod:
+    #!/usr/bin/env bash
     go mod download
     go mod tidy
-    #!/usr/bin/env bash
     if [ -d examples/ ] && [ "$(ls examples/)" ]; then
         for dir in examples/*/; do
             (cd "${dir}" && go mod tidy)
