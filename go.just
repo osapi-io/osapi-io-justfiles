@@ -34,7 +34,7 @@
 
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
-coverage_dir := env("JUST_COVERAGE_DIR", "coverage")
+coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
 os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # Add required tool dependencies to go.mod
