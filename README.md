@@ -39,17 +39,32 @@ Add `.just/` to `.gitignore`:
 .just/
 ```
 
-### Project-specific tools
+### Lazy tool dependencies
 
-`go::init` installs only the tools required by shared recipes (golangci-lint,
-gocover-cobertura, gofumpt, golines). Projects can add their own extras by
-defining a top-level `init` recipe that depends on `go::init`:
+Each recipe installs its own tool dependencies on first use via private `_*-deps`
+recipes. There is no need to run `init` before using a recipe — tools are
+pulled automatically. `go::init` is a convenience that installs all tools
+upfront.
+
+Projects can add their own extras by defining a top-level `init` recipe that
+depends on `go::init`:
 
 ```just
 # Add shared + project-specific tool dependencies
 init: go::init
     go get -tool github.com/golang/mock/mockgen
-    go get -tool github.com/princjef/gomarkdoc/cmd/gomarkdoc
+```
+
+### Documentation generation
+
+`go::docs` and `go::docs-check` use
+[gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown
+file per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
+`docs-check` is **not** included in `go::test` by default — add it to your
+project's `test` recipe where needed:
+
+```just
+test: go::test go::docs-check bats::test
 ```
 
 ## Available Recipes
@@ -58,23 +73,25 @@ init: go::init
 
 | Recipe | Description |
 |---|---|
-| `init` | Add required tool dependencies to go.mod |
+| `init` | Install all tool dependencies |
 | `mod` | Module maintenance (download + tidy) |
 | `vet` | Run golangci-lint |
 | `run *args` | Compile and run Go program |
 | `unit` | Run unit tests |
 | `unit-cov` | Run tests with coverage |
 | `unit-cov-map` | Coverage with HTML heatmap |
-| `test` | Run all checks (mod, fmt, docs, vet, coverage) |
+| `test` | Run all checks (mod, fmt, vet, coverage) |
 | `fmt` | Auto-format with gofumpt + golines |
 | `fmt-check` | Check formatting |
 | `generate` | Run go generate |
-| `docs-check` | Check if docs are outdated |
+| `docs` | Generate Go package docs with gomarkdoc |
+| `docs-check` | Verify generated docs are up to date |
 
 **Environment variables:**
 
 - `JUST_MAIN_PACKAGE` - main package path (default: `main.go`)
 - `JUST_COVERAGE_DIR` - coverage output directory (default: `.coverage`)
+- `JUST_DOCS_DIR` - generated docs output directory (default: `docs/gen`)
 
 ### bats.just
 
