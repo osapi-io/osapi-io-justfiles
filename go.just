@@ -24,13 +24,14 @@
 # go.mod via Go 1.24+ tool directives. Run `just init` to add the required
 # tool dependencies to your go.mod, then `just deps` to install them.
 #
-# Required tool dependencies:
+# Default tool dependencies (installed by `init`):
 #   - github.com/golangci/golangci-lint/v2/cmd/golangci-lint    (vet)
 #   - github.com/boumenot/gocover-cobertura                     (unit-cov)
 #   - mvdan.cc/gofumpt                                          (fmt, fmt-check)
 #   - github.com/segmentio/golines                               (fmt, fmt-check)
-#   - github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen  (generate)
-#   - github.com/golang/mock/mockgen                             (generate)
+#
+# Projects can add extra tools by defining their own `init` recipe
+# that depends on `go::init`.
 
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
@@ -44,8 +45,6 @@ init:
     go get -tool github.com/boumenot/gocover-cobertura
     go get -tool mvdan.cc/gofumpt
     go get -tool github.com/segmentio/golines
-    go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
-    go get -tool github.com/golang/mock/mockgen
 
 # Module maintenance (download + tidy)
 [group: 'setup']
