@@ -4,35 +4,52 @@ A justfile used by osapi-io projects.
 
 ## Usage
 
-Use the [remote justfiles](https://just.systems/man/en/remote-justfiles.html)
-pattern with optional imports:
+Shared recipes are consumed as
+[just modules](https://just.systems/man/en/modules.html). Each module has a
+shim file (`*.mod.just`) that sets the working directory and imports the actual
+recipe file. Both are fetched from this repo.
 
 ```just
-import? 'go.just'
-import? 'bats.just'
+mod go '.just/remote/go.mod.just'
+mod bats '.just/remote/bats.mod.just'
 
 # Fetch shared justfiles from osapi-io-justfiles
 fetch:
-    curl -sSL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/main/go.just > go.just
-    curl -sSL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/main/bats.just > bats.just
+    mkdir -p .just/remote
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/refs/heads/main/go.mod.just -o .just/remote/go.mod.just
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/refs/heads/main/go.just -o .just/remote/go.just
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/refs/heads/main/bats.mod.just -o .just/remote/bats.mod.just
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-io-justfiles/refs/heads/main/bats.just -o .just/remote/bats.just
 ```
 
 Then run `just fetch` to download the shared recipes, and they become available
-immediately:
+under their module namespace:
 
 ```bash
-$ just fetch     # Download shared justfiles
-$ just init      # Add required tool dependencies to go.mod (first time only)
-$ just test      # Run all tests
-$ just fmt       # Auto-format code
+$ just fetch        # Download shared justfiles
+$ just go::init     # Add default tool dependencies to go.mod
+$ just go::test     # Run all Go checks
+$ just go::fmt      # Auto-format code
+$ just bats::test   # Run BATS integration tests
 ```
 
-Add the fetched `.just` files to `.gitignore`:
+Add `.just/` to `.gitignore`:
 
 ```
-go.just
-bats.just
-docs.just
+.just/
+```
+
+### Project-specific tools
+
+`go::init` installs only the tools required by shared recipes (golangci-lint,
+gocover-cobertura, gofumpt, golines). Projects can add their own extras by
+defining a top-level `init` recipe that depends on `go::init`:
+
+```just
+# Add shared + project-specific tool dependencies
+init: go::init
+    go get -tool github.com/golang/mock/mockgen
+    go get -tool github.com/princjef/gomarkdoc/cmd/gomarkdoc
 ```
 
 ## Available Recipes
@@ -57,6 +74,7 @@ docs.just
 **Environment variables:**
 
 - `JUST_MAIN_PACKAGE` - main package path (default: `main.go`)
+- `JUST_COVERAGE_DIR` - coverage output directory (default: `.coverage`)
 
 ### bats.just
 

@@ -4,15 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Shared [just](https://just.systems/) recipes used by osapi-io projects via the
-[remote justfiles](https://just.systems/man/en/remote-justfiles.html) pattern.
-Consuming projects use `import?` with a fetch recipe to pull these files.
+Shared [just](https://just.systems/) recipes used by osapi-io projects via
+[just modules](https://just.systems/man/en/modules.html). Consuming projects
+use `mod` directives pointing at shim files (`*.mod.just`) which set the
+working directory and import the actual recipe files. Both shim and recipe
+files are fetched via a `fetch` recipe.
 
 ## Repository Structure
 
 - `go.just` - Go build, test, lint, and formatting recipes
+- `go.mod.just` - Module shim for go.just (sets working directory to project root)
 - `bats.just` - BATS integration test recipes
+- `bats.mod.just` - Module shim for bats.just (sets working directory to `test/`)
 - `docs.just` - Docusaurus documentation recipes
+- `docs.mod.just` - Module shim for docs.just (sets working directory to `docs/`)
 
 ## Conventions
 
