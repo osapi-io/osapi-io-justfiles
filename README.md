@@ -27,7 +27,7 @@ under their module namespace:
 
 ```bash
 $ just fetch        # Download shared justfiles
-$ just go::init     # Add default tool dependencies to go.mod
+$ just go::deps     # Install all Go tool dependencies
 $ just go::test     # Run all Go checks
 $ just go::fmt      # Auto-format code
 $ just bats::test   # Run BATS integration tests
@@ -42,16 +42,15 @@ Add `.just/` to `.gitignore`:
 ### Lazy tool dependencies
 
 Each recipe installs its own tool dependencies on first use via private `_*-deps`
-recipes. There is no need to run `init` before using a recipe — tools are
-pulled automatically. `go::init` is a convenience that installs all tools
+recipes. There is no need to run `deps` before using a recipe — tools are
+pulled automatically. `go::deps` is a convenience that installs all tools
 upfront.
 
-Projects can add their own extras by defining a top-level `init` recipe that
-depends on `go::init`:
+Projects define a top-level `deps` recipe that calls each module's `deps`:
 
 ```just
-# Add shared + project-specific tool dependencies
-init: go::init
+# Install all dependencies
+deps: go::deps bats::deps
     go get -tool github.com/golang/mock/mockgen
 ```
 
@@ -73,7 +72,7 @@ test: go::test go::docs-check bats::test
 
 | Recipe | Description |
 |---|---|
-| `init` | Install all tool dependencies |
+| `deps` | Install all tool dependencies |
 | `mod` | Module maintenance (download + tidy) |
 | `vet` | Run golangci-lint |
 | `run *args` | Compile and run Go program |

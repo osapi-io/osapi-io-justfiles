@@ -22,11 +22,11 @@
 #
 # These recipes use `go tool` to run tools declared in the consuming project's
 # go.mod via Go 1.24+ tool directives. Tool dependencies are installed lazily
-# by the recipes that need them. Run `just init` to install all tools upfront,
+# by the recipes that need them. Run `just deps` to install all tools upfront,
 # or let each recipe pull its own on first use.
 #
-# Projects can add extra tools by defining their own `init` recipe
-# that depends on `go::init`.
+# Projects can add extra tools by defining their own `deps` recipe
+# that depends on `go::deps`.
 
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
@@ -57,7 +57,7 @@ _docs-deps:
 
 # Install all tool dependencies
 [group: 'setup']
-init: _fmt-deps _vet-deps _cov-deps _docs-deps
+deps: _fmt-deps _vet-deps _cov-deps _docs-deps
 
 # Module maintenance (download + tidy)
 [group: 'setup']
