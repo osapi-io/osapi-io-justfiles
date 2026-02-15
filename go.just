@@ -34,6 +34,7 @@
 
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
+coverage_dir := env("JUST_COVERAGE_DIR", "coverage")
 os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # Add required tool dependencies to go.mod
@@ -76,15 +77,16 @@ unit:
 # Generate coverage
 [group: 'test']
 unit-cov:
-    GOEXPERIMENT=nocoverageredesign go test {{ os_tags }} -race -coverprofile=cover.out -v $(go list ./...)
-    grep -v -f .coverignore cover.out > cover.tmp && mv cover.tmp cover.out
-    go tool github.com/boumenot/gocover-cobertura < cover.out > cobertura.xml
-    go tool cover -func=cover.out
+    mkdir -p {{ coverage_dir }}
+    go test {{ os_tags }} -race -coverprofile={{ coverage_dir }}/cover.out -v $(go list ./...)
+    grep -v -f .coverignore {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cover.tmp && mv {{ coverage_dir }}/cover.tmp {{ coverage_dir }}/cover.out
+    go tool github.com/boumenot/gocover-cobertura < {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cobertura.xml
+    go tool cover -func={{ coverage_dir }}/cover.out
 
 # Generate coverage and show heatmap
 [group: 'test']
 unit-cov-map: unit-cov
-    go tool cover -html=cover.out
+    go tool cover -html={{ coverage_dir }}/cover.out
 
 # Test all (mod, fmt check, docs check, vet, coverage)
 [group: 'test']
