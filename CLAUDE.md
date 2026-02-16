@@ -46,24 +46,35 @@ All `.just` files must include the MIT license header at the top using `#` comme
 - The `test` recipe should chain all checks (mod, fmt-check, vet, unit-cov)
 - Keep recipes independently runnable where possible
 
+### Branching
+
+When committing changes via `/commit`, create a feature branch first if
+currently on `main`. Branch names use the pattern `type/short-description`
+(e.g., `feat/add-dns-retry`, `fix/memory-leak`, `docs/update-readme`).
+
 ### Commit Messages
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/) with the
 50/72 rule:
 
+- **Format**: `type(scope): description`
 - **Subject line**: max 50 characters, imperative mood, capitalized, no period
 - **Body**: wrap at 72 characters, separated from subject by a blank line
-- **Format**: `type(scope): description`
 - **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
-- Summarize the "what" and "why", not the "how"
+
+When committing via Claude Code, end with:
+- `🤖 Generated with [Claude Code](https://claude.ai/code)`
+- `Co-Authored-By: Claude <noreply@anthropic.com>`
 
 Example:
-```
-feat(go): add init recipe for tool dependencies
 
-Add a recipe that runs `go get -tool` for all required tool
-dependencies, making it easy to bootstrap a new project's go.mod.
-```
+    feat(go): add init recipe for tool dependencies
+
+    Add a recipe that runs `go get -tool` for all required tool
+    dependencies, making it easy to bootstrap a new project's go.mod.
+
+    🤖 Generated with [Claude Code](https://claude.ai/code)
+    Co-Authored-By: Claude <noreply@anthropic.com>
 
 ### Parity with Taskfiles
 
