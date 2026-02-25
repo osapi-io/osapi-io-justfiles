@@ -1,19 +1,24 @@
 ---
-kind/go:
+github/action:
   - changed-files:
-    - any-glob-to-any-file: "go.just"
-    - any-glob-to-any-file: "go.mod.just"
+      - any-glob-to-any-file: ".github/**/*.yml"
 
 kind/bats:
   - changed-files:
-    - any-glob-to-any-file: "bats.just"
-    - any-glob-to-any-file: "bats.mod.just"
+      - any-glob-to-any-file: "bats.just"
+      - any-glob-to-any-file: "bats.mod.just"
 
 kind/docs:
   - changed-files:
-    - any-glob-to-any-file: "docs.just"
-    - any-glob-to-any-file: "docs.mod.just"
+      - any-glob-to-any-file: "docs.just"
+      - any-glob-to-any-file: "docs.mod.just"
 
-github/action:
+kind/go:
   - changed-files:
-    - any-glob-to-any-file: ".github/**/*.yml"
+      - any-glob-to-any-file: "go.just"
+      - any-glob-to-any-file: "go.mod.just"
+
+kind/yaml:
+  - changed-files:
+      - any-glob-to-any-file: "**/*.yaml"
+      - any-glob-to-any-file: "**/*.yml"
