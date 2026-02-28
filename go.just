@@ -94,7 +94,7 @@ unit:
 
 # Run integration tests (requires running service)
 unit-int:
-    go test -tags integration -v -count=1 ./test/smoke/...
+    go test -tags integration -v -count=1 ./test/integration/...
 
 # Generate coverage
 [group: 'test']
