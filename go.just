@@ -92,6 +92,10 @@ run *args:
 unit:
     go test {{ os_tags }} -parallel 5 -race -v ./...
 
+# Run integration tests (requires running service)
+unit-int:
+    go test -tags integration -v -count=1 ./test/smoke/...
+
 # Generate coverage
 [group: 'test']
 unit-cov: _cov-deps

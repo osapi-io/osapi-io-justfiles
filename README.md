@@ -82,6 +82,7 @@ test: go::test go::docs-check bats::test
 | `vet` | Run golangci-lint |
 | `run *args` | Compile and run Go program |
 | `unit` | Run unit tests |
+| `unit-int` | Run integration tests (requires running service) |
 | `unit-cov` | Run tests with coverage |
 | `unit-cov-map` | Coverage with HTML heatmap |
 | `test` | Run all checks (mod, fmt, vet, coverage) |
