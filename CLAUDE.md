@@ -78,7 +78,7 @@ Example:
 
 ### Parity with Taskfiles
 
-These recipes mirror `osapi-io-taskfiles/`. When updating recipes here, consider
+These recipes mirror `osapi-taskfiles/`. When updating recipes here, consider
 whether the corresponding taskfile needs the same change. Recipe name mapping:
 
 | Taskfile | Justfile |
