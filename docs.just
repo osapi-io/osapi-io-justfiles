@@ -18,7 +18,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# Docusaurus documentation recipes for osapi-io projects.
+# Documentation recipes for osapi-io projects.
 
 host := env("DOCS_HOST", "localhost")
 port := env("DOCS_PORT", "3001")
@@ -67,12 +67,12 @@ deploy:
 # Reformat docs with prettier
 [group: 'fmt']
 fmt: bun-install
-    bun run prettier docs --write --config prettier.config.js --ignore-path .prettierignore
+    bun run prettier . --write --config prettier.config.js --ignore-path .prettierignore
 
 # Check docs formatting with prettier
 [group: 'fmt']
 fmt-check: bun-install
-    bun run prettier docs --check --config prettier.config.js
+    bun run prettier . --check --config prettier.config.js --ignore-path .prettierignore
 
 # Generate OpenAPI docs
 [group: 'codegen']
