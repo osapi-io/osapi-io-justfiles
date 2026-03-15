@@ -1,3 +1,4 @@
+[![lint](https://img.shields.io/github/actions/workflow/status/osapi-io/osapi-justfiles/lint.yml?style=for-the-badge)](https://github.com/osapi-io/osapi-justfiles/actions/workflows/lint.yml)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=for-the-badge)](LICENSE)
 [![conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
 [![built with just](https://img.shields.io/badge/Built_with-Just-black?style=for-the-badge&logo=just&logoColor=white)](https://just.systems)
@@ -145,6 +146,13 @@ using `curl`:
 ```dockerfile
 COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
 ```
+
+### just.just
+
+| Recipe | Description |
+|---|---|
+| `fmt` | Reformat justfiles with canonical style |
+| `fmt-check` | Check justfile formatting |
 
 ## 🤝 Contributing
 

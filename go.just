@@ -1,15 +1,12 @@
 # Copyright (c) 2026 John Dewey
-
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
 # deal in the Software without restriction, including without limitation the
 # rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 # sell copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -17,7 +14,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-
 # Go recipes for osapi-io projects.
 #
 # These recipes use `go tool` to run tools declared in the consuming project's
@@ -56,11 +52,11 @@ _docs-deps:
 # --- Setup ---
 
 # Install all tool dependencies
-[group: 'setup']
+[group('setup')]
 deps: _fmt-deps _vet-deps _cov-deps _docs-deps
 
 # Module maintenance (download + tidy)
-[group: 'setup']
+[group('setup')]
 mod:
     #!/usr/bin/env bash
     go mod download
@@ -74,21 +70,21 @@ mod:
 # --- Lint ---
 
 # Report likely mistakes in packages
-[group: 'lint']
+[group('lint')]
 vet: _vet-deps
     go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run --config {{ git_root }}/.golangci.yml
 
 # --- Dev ---
 
 # Compile and run Go program
-[group: 'dev']
+[group('dev')]
 run *args:
     go run {{ main_package }} {{ args }}
 
 # --- Test ---
 
 # Test packages
-[group: 'test']
+[group('test')]
 unit:
     go test {{ os_tags }} -parallel 5 -race -v ./...
 
@@ -97,7 +93,7 @@ unit-int:
     go test -tags integration -v -count=1 ./test/integration/...
 
 # Generate coverage
-[group: 'test']
+[group('test')]
 unit-cov: _cov-deps
     mkdir -p {{ coverage_dir }}
     go test {{ os_tags }} -race -coverprofile={{ coverage_dir }}/cover.out -v $(go list ./...)
@@ -106,24 +102,24 @@ unit-cov: _cov-deps
     go tool cover -func={{ coverage_dir }}/cover.out
 
 # Generate coverage and show heatmap
-[group: 'test']
+[group('test')]
 unit-cov-map: unit-cov
     go tool cover -html={{ coverage_dir }}/cover.out
 
 # Test all (mod, fmt check, vet, coverage)
-[group: 'test']
+[group('test')]
 test: mod fmt-check vet unit-cov
 
 # --- Fmt ---
 
 # Reformat Go files with gofumpt + golines
-[group: 'fmt']
+[group('fmt')]
 fmt: _fmt-deps
     find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool mvdan.cc/gofumpt -l -w
     find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool github.com/segmentio/golines --base-formatter="go tool mvdan.cc/gofumpt" -w
 
 # Check Go file formatting
-[group: 'fmt']
+[group('fmt')]
 fmt-check: _fmt-deps
     test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool mvdan.cc/gofumpt -d -e | tee /dev/stderr)"
     test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool github.com/segmentio/golines --dry-run --base-formatter="go tool mvdan.cc/gofumpt" -l | tee /dev/stderr)"
@@ -131,14 +127,14 @@ fmt-check: _fmt-deps
 # --- Codegen ---
 
 # Generate Go files by processing source
-[group: 'codegen']
+[group('codegen')]
 generate:
     go generate ./...
 
 # --- Docs ---
 
 # Generate Go package documentation
-[group: 'docs']
+[group('docs')]
 docs: _docs-deps
     #!/usr/bin/env bash
     set -euo pipefail
@@ -152,7 +148,7 @@ docs: _docs-deps
     done
 
 # Check if generated docs are up to date
-[group: 'docs']
+[group('docs')]
 docs-check: _docs-deps
     #!/usr/bin/env bash
     set -euo pipefail

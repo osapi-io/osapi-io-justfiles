@@ -25,6 +25,8 @@ files are fetched via a `fetch` recipe.
 - `docs.mod.just` - Module shim for docs.just (sets working directory to `docs/`)
 - `docker.just` - Docker build and push recipes
 - `docker.mod.just` - Module shim for docker.just (sets working directory to project root)
+- `just.just` - Justfile formatting recipes
+- `just.mod.just` - Module shim for just.just (sets working directory to project root)
 - `Dockerfile` - Minimal scratch-based image shipping `.just` files
 - `.dockerignore` - Whitelists only `*.just` files for the Docker build context
 
@@ -33,7 +35,7 @@ files are fetched via a `fetch` recipe.
 ### Recipe Style
 
 - Use `#` comment above each recipe as its description
-- Use `[group: 'name']` attributes to organize recipes (setup, test, fmt, lint, dev, build, codegen, docs)
+- Use `[group('name')]` attributes to organize recipes (setup, test, fmt, lint, dev, build, codegen, docs)
 - Use `[private]` for helper recipes not meant to be called directly
 - Use kebab-case for recipe names (e.g., `fmt-check`, `unit-cov`)
 - Use `#!/usr/bin/env bash` shebang for multi-line shell blocks
@@ -107,3 +109,5 @@ whether the corresponding taskfile needs the same change. Recipe name mapping:
 | `docs:start` | `start` |
 | `docker:build` | `build` |
 | `docker:push` | `push` |
+| `just:fmt` | `fmt` |
+| `just:fmt:check` | `fmt-check` |
