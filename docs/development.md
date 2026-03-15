@@ -33,6 +33,14 @@ curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads
 
 Then run the consuming project's recipes to verify behavior.
 
+## Before committing
+
+Run `just ready` before committing to ensure justfiles are properly formatted:
+
+```bash
+just ready   # fmt
+```
+
 ## Branching
 
 All changes should be developed on feature branches. Create a branch from `main`
