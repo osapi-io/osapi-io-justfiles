@@ -1,15 +1,12 @@
 # Copyright (c) 2026 John Dewey
-
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
 # deal in the Software without restriction, including without limitation the
 # rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
 # sell copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -17,65 +14,64 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-
 # Documentation recipes for osapi-io projects.
 
 host := env("DOCS_HOST", "localhost")
 port := env("DOCS_PORT", "3001")
 
 # Install bun packages
-[group: 'setup']
+[group('setup')]
 [private]
 bun-install:
     bun install
 
 # Install global dependencies (redocly)
-[group: 'setup']
+[group('setup')]
 deps:
     bun install -g @redocly/cli
 
 # Build documentation site
-[group: 'build']
+[group('build')]
 build: bun-install
     bun run docusaurus build
 
 # Start development server
-[group: 'dev']
+[group('dev')]
 start: bun-install
     bun run docusaurus start --no-open --host={{ host }} --port={{ port }}
 
 # Preview built site
-[group: 'dev']
+[group('dev')]
 serve: bun-install
     bun run docusaurus serve --no-open --host={{ host }} --port={{ port }}
 
 # Clean build directory
-[group: 'build']
+[group('build')]
 clean:
     rm -rf ./build
 
 # Create a new documentation version
-[group: 'build']
+[group('build')]
 bump version:
     bun run docusaurus docs:version {{ version }}
 
 # Build and deploy Docusaurus (requires GIT_USER and GIT_PASS)
-[group: 'build']
+[group('build')]
 deploy:
     bun run docusaurus deploy
 
 # Reformat docs with prettier
-[group: 'fmt']
+[group('fmt')]
 fmt: bun-install
     bun run prettier . --write --config prettier.config.js --ignore-path .prettierignore
 
 # Check docs formatting with prettier
-[group: 'fmt']
+[group('fmt')]
 fmt-check: bun-install
     bun run prettier . --check --config prettier.config.js --ignore-path .prettierignore
 
 # Generate OpenAPI docs
-[group: 'codegen']
+[group('codegen')]
 generate: bun-install
     rm -rf docs/gen/
     bun run docusaurus gen-api-docs all

@@ -14,26 +14,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-# BATS integration test recipes for osapi-io projects.
+# Justfile formatting recipes for osapi-io projects.
 
-# Install BATS and shfmt dependencies
-[group('setup')]
-deps:
-    go get github.com/bats-core/bats-core@latest
-    bash $(go env GOMODCACHE)/$(go list -m github.com/bats-core/bats-core | tr ' ' @)/install.sh ./vendor/bats
-    go install mvdan.cc/sh/v3/cmd/shfmt@latest
-
-# Reformat .bats files with shfmt
+# Reformat justfiles with canonical style
 [group('fmt')]
 fmt:
-    find . -name '*.bats' -not -path './test/vendor/*' -exec shfmt -w {} +
+    #!/usr/bin/env bash
+    set -euo pipefail
+    find . \( -name '*.just' -o -iname 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' | while read -r f; do
+        just --fmt --unstable --justfile "$f"
+    done
 
-# Check .bats file formatting
+# Check justfile formatting
 [group('fmt')]
 fmt-check:
-    find . -name '*.bats' -not -path './test/vendor/*' -exec shfmt -l -d {} +
-
-# Run BATS integration tests
-[group('test')]
-test: fmt-check
-    ./vendor/bats/bin/bats .
+    #!/usr/bin/env bash
+    set -euo pipefail
+    failed=0
+    while read -r f; do
+        if ! just --fmt --check --unstable --justfile "$f" > /dev/null 2>&1; then
+            echo "FAIL: $f"
+            just --fmt --check --unstable --justfile "$f" 2>&1 || true
+            failed=1
+        fi
+    done < <(find . \( -name '*.just' -o -iname 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*')
+    exit $failed

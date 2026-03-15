@@ -146,6 +146,13 @@ using `curl`:
 COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
 ```
 
+### just.just
+
+| Recipe | Description |
+|---|---|
+| `fmt` | Reformat justfiles with canonical style |
+| `fmt-check` | Check justfile formatting |
+
 ## 🤝 Contributing
 
 See the [Development](docs/development.md) guide for prerequisites, setup,
