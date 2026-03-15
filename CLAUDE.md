@@ -23,6 +23,10 @@ files are fetched via a `fetch` recipe.
 - `bats.mod.just` - Module shim for bats.just (sets working directory to `test/`)
 - `docs.just` - Docusaurus documentation recipes
 - `docs.mod.just` - Module shim for docs.just (sets working directory to `docs/`)
+- `docker.just` - Docker build and push recipes
+- `docker.mod.just` - Module shim for docker.just (sets working directory to project root)
+- `Dockerfile` - Minimal scratch-based image shipping `.just` files
+- `.dockerignore` - Whitelists only `*.just` files for the Docker build context
 
 ## Conventions
 
@@ -101,3 +105,5 @@ whether the corresponding taskfile needs the same change. Recipe name mapping:
 | `go:fmt:check` | `fmt-check` |
 | `bats:test` | `test` |
 | `docs:start` | `start` |
+| `docker:build` | `build` |
+| `docker:push` | `push` |
