@@ -16,7 +16,7 @@
 # DEALINGS IN THE SOFTWARE.
 # Docker recipes for osapi-io projects.
 
-image_name := env("JUST_DOCKER_IMAGE", "osapi-justfiles")
+image_name := env("JUST_DOCKER_IMAGE", `basename $(git rev-parse --show-toplevel)`)
 image_tag := env("JUST_DOCKER_TAG", "latest")
 
 # --- Build ---
