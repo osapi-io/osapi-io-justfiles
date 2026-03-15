@@ -18,13 +18,14 @@
 
 image_name := env("JUST_DOCKER_IMAGE", `basename $(git rev-parse --show-toplevel)`)
 image_tag := env("JUST_DOCKER_TAG", "latest")
+dockerfile := env("JUST_DOCKERFILE", "Dockerfile.local")
 
 # --- Build ---
 
 # Build the Docker image
 [group('build')]
 build:
-    docker build -t {{ image_name }}:{{ image_tag }} .
+    docker build -f {{ dockerfile }} -t {{ image_name }}:{{ image_tag }} .
 
 # Push the Docker image to the registry
 [group('build')]
