@@ -21,7 +21,7 @@
 fmt:
     #!/usr/bin/env bash
     set -euo pipefail
-    find . \( -name '*.just' -o -iname 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path './.just/*' | while read -r f; do
+    find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path './.just/*' | while read -r f; do
         just --fmt --unstable --justfile "$f"
     done
 
@@ -37,5 +37,5 @@ fmt-check:
             just --fmt --check --unstable --justfile "$f" 2>&1 || true
             failed=1
         fi
-    done < <(find . \( -name '*.just' -o -iname 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path './.just/*')
+    done < <(find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path './.just/*')
     exit $failed
