@@ -35,10 +35,10 @@ Then run the consuming project's recipes to verify behavior.
 
 ## Before committing
 
-Run the formatting check to ensure justfiles are properly formatted:
+Run `just ready` before committing to ensure justfiles are properly formatted:
 
 ```bash
-just --justfile just.just --working-directory . fmt-check
+just ready   # fmt
 ```
 
 ## Branching
