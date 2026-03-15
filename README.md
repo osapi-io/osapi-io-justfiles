@@ -127,6 +127,25 @@ test: go::test go::docs-check bats::test
 - `DOCS_HOST` - dev server host (default: `localhost`)
 - `DOCS_PORT` - dev server port (default: `3001`)
 
+### docker.just
+
+| Recipe | Description |
+|---|---|
+| `build` | Build the Docker image |
+| `push` | Push the Docker image to the registry |
+
+**Environment variables:**
+
+- `JUST_DOCKER_IMAGE` - image name (default: `osapi-justfiles`)
+- `JUST_DOCKER_TAG` - image tag (default: `latest`)
+
+Consuming projects can copy `.just` files directly from the image instead of
+using `curl`:
+
+```dockerfile
+COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
+```
+
 ## 🤝 Contributing
 
 See the [Development](docs/development.md) guide for prerequisites, setup,
