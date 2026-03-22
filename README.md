@@ -85,6 +85,7 @@ test: go::test go::docs-check bats::test
 | `unit` | Run unit tests |
 | `unit-int` | Run integration tests (requires running service) |
 | `unit-cov` | Run tests with coverage |
+| `unit-cov-gaps` | Coverage gaps only with HTML heatmap |
 | `unit-cov-map` | Coverage with HTML heatmap |
 | `test` | Run all checks (mod, fmt, vet, coverage) |
 | `fmt` | Auto-format with gofumpt + golines |
