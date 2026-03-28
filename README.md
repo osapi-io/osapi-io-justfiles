@@ -148,6 +148,23 @@ using `curl`:
 COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
 ```
 
+### react.just
+
+| Recipe | Description |
+|---|---|
+| `deps` | Install all dependencies |
+| `dev` | Start development server |
+| `build` | Production build |
+| `lint` | Run ESLint |
+| `test` | Run all checks (fmt, lint, build) |
+| `fmt` | Auto-format with Prettier |
+| `fmt-check` | Check formatting |
+| `generate` | Generate TypeScript SDK with orval |
+
+**Environment variables:**
+
+- `JUST_FMT_PATTERN` - Prettier glob pattern (default: `src/**/*.{ts,tsx,css}`)
+
 ### just.just
 
 | Recipe | Description |
