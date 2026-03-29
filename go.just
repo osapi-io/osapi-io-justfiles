@@ -101,7 +101,7 @@ unit-cov: _cov-deps
 unit-cov-gaps: unit-cov
     #!/usr/bin/env bash
     set -euo pipefail
-    gap_files=$(go tool cover -func={{ coverage_dir }}/cover.out | grep -v '100.0%' | grep -v '^total:' | awk -F: '{print $1}' | sort -u)
+    gap_files=$(go tool cover -func={{ coverage_dir }}/cover.out | grep -v '100.0%' | grep -v '^total:' | awk -F: '{print $1}' | sort -u || true)
     if [ -z "$gap_files" ]; then echo "No coverage gaps found."; exit 0; fi
     { head -1 {{ coverage_dir }}/cover.out; grep -F -f <(echo "$gap_files") {{ coverage_dir }}/cover.out; } > {{ coverage_dir }}/gaps.out
     go tool cover -html={{ coverage_dir }}/gaps.out
