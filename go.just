@@ -27,7 +27,6 @@
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
 coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
-docs_dir := env("JUST_DOCS_DIR", "docs/gen")
 os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # --- Private dependency recipes ---
@@ -45,15 +44,11 @@ _vet-deps:
 _cov-deps:
     go get -tool github.com/boumenot/gocover-cobertura
 
-[private]
-_docs-deps:
-    go get -tool github.com/princjef/gomarkdoc/cmd/gomarkdoc
-
 # --- Setup ---
 
 # Install all tool dependencies
 [group('setup')]
-deps: _fmt-deps _vet-deps _cov-deps _docs-deps
+deps: _fmt-deps _vet-deps _cov-deps
 
 # Module maintenance (download + tidy)
 [group('setup')]
@@ -140,32 +135,3 @@ fmt-check: _fmt-deps
 [group('codegen')]
 generate:
     go generate ./...
-
-# --- Docs ---
-
-# Generate Go package documentation
-[group('docs')]
-docs: _docs-deps
-    #!/usr/bin/env bash
-    set -euo pipefail
-    mkdir -p {{ docs_dir }}
-    tmpl='{{ "{{" }}.Name{{ "}}" }}'
-    for pkg in $(go list ./...); do
-        name=$(go list -f "$tmpl" "$pkg")
-        [[ "$name" == "mocks" || "$name" == "main" ]] && continue
-        go tool github.com/princjef/gomarkdoc/cmd/gomarkdoc \
-            -o "{{ docs_dir }}/${name}.md" "$pkg"
-    done
-
-# Check if generated docs are up to date
-[group('docs')]
-docs-check: _docs-deps
-    #!/usr/bin/env bash
-    set -euo pipefail
-    tmpl='{{ "{{" }}.Name{{ "}}" }}'
-    for pkg in $(go list ./...); do
-        name=$(go list -f "$tmpl" "$pkg")
-        [[ "$name" == "mocks" || "$name" == "main" ]] && continue
-        go tool github.com/princjef/gomarkdoc/cmd/gomarkdoc \
-            -c -o "{{ docs_dir }}/${name}.md" "$pkg"
-    done
