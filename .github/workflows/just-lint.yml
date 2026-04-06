@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Install just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
       - name: Lint justfiles
         run: just --justfile just.just --working-directory . fmt-check
