@@ -27,6 +27,7 @@
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
 coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
+go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
 os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # --- Private dependency recipes ---
@@ -120,14 +121,14 @@ test: mod fmt-check vet unit-cov
 # Reformat Go files with gofumpt + golines
 [group('fmt')]
 fmt: _fmt-deps
-    find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool mvdan.cc/gofumpt -l -w
-    find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool github.com/segmentio/golines --base-formatter="go tool mvdan.cc/gofumpt" -w
+    find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool mvdan.cc/gofumpt -l -w
+    find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool github.com/segmentio/golines --base-formatter="go tool mvdan.cc/gofumpt" -w
 
 # Check Go file formatting
 [group('fmt')]
 fmt-check: _fmt-deps
-    test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool mvdan.cc/gofumpt -d -e | tee /dev/stderr)"
-    test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' | xargs go tool github.com/segmentio/golines --dry-run --base-formatter="go tool mvdan.cc/gofumpt" -l | tee /dev/stderr)"
+    test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool mvdan.cc/gofumpt -d -e | tee /dev/stderr)"
+    test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool github.com/segmentio/golines --dry-run --base-formatter="go tool mvdan.cc/gofumpt" -l | tee /dev/stderr)"
 
 # --- Codegen ---
 
