@@ -98,6 +98,8 @@ test: go::test go::docs-check bats::test
 
 - `JUST_MAIN_PACKAGE` - main package path (default: `main.go`)
 - `JUST_COVERAGE_DIR` - coverage output directory (default: `.coverage`)
+- `JUST_GO_FMT_EXCLUDES` - extra `find` exclusions for `fmt` / `fmt-check`
+  (e.g., `! -path '*/vendor/*'`)
 - `JUST_DOCS_DIR` - generated docs output directory (default: `docs/gen`)
 
 ### bats.just
