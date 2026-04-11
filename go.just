@@ -78,11 +78,15 @@ run *args:
     go run {{ main_package }} {{ args }}
 
 # --- Test ---
+# go_packages lists all Go packages excluding node_modules (which may
+# contain vendored .go files from npm packages like flatted).
+
+go_packages := "$(go list ./... | grep -v /node_modules/)"
 
 # Test packages
 [group('test')]
 unit:
-    go test {{ os_tags }} -parallel 5 -race -v ./...
+    go test {{ os_tags }} -parallel 5 -race -v {{ go_packages }}
 
 # Run integration tests (requires running service)
 unit-int:
@@ -92,7 +96,7 @@ unit-int:
 [group('test')]
 unit-cov: _cov-deps
     mkdir -p {{ coverage_dir }}
-    go test {{ os_tags }} -race -coverprofile={{ coverage_dir }}/cover.out -v $(go list ./...)
+    go test {{ os_tags }} -race -coverprofile={{ coverage_dir }}/cover.out -v {{ go_packages }}
     grep -v -f .coverignore {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cover.tmp && mv {{ coverage_dir }}/cover.tmp {{ coverage_dir }}/cover.out
     go tool github.com/boumenot/gocover-cobertura < {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cobertura.xml
     go tool cover -func={{ coverage_dir }}/cover.out
