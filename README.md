@@ -76,33 +76,14 @@ test: go::test go::docs-check bats::test
 
 Modules are moving into their own directories, each documenting itself:
 
-| Module  | Description                                       | Docs                               |
-| ------- | ------------------------------------------------- | ---------------------------------- |
-| `go`    | Go build, test, coverage gate, format, lint       | [go/README.md](go/README.md)       |
-| `md`    | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md)       |
-| `react` | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md) |
+| Module       | Description                                       | Docs                                         |
+| ------------ | ------------------------------------------------- | -------------------------------------------- |
+| `docusaurus` | Docusaurus site build, serve, deploy, formatting  | [docusaurus/README.md](docusaurus/README.md) |
+| `go`         | Go build, test, coverage gate, format, lint       | [go/README.md](go/README.md)                 |
+| `md`         | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md)                 |
+| `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
 
 Modules not yet moved are documented inline below.
-
-### docs.just
-
-| Recipe         | Description                           |
-| -------------- | ------------------------------------- |
-| `deps`         | Install global dependencies (redocly) |
-| `build`        | Build documentation site              |
-| `start`        | Start dev server                      |
-| `serve`        | Preview built site                    |
-| `clean`        | Clean build directory                 |
-| `bump version` | Create new docs version               |
-| `deploy`       | Build and deploy                      |
-| `fmt`          | Format docs with prettier             |
-| `fmt-check`    | Check docs formatting                 |
-| `generate`     | Generate OpenAPI docs                 |
-
-**Environment variables:**
-
-- `JUST_DOCS_HOST` - dev server host (default: `localhost`)
-- `JUST_DOCS_PORT` - dev server port (default: `3001`)
 
 ### docker.just
 
