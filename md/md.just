@@ -45,12 +45,16 @@ md_excludes := "--exclude '**/.claude/**' --exclude '**/node_modules/**' --exclu
 md_site_exclude := if md_site_dir == "" { "" } else { "--exclude '" + md_site_dir + "/**'" }
 md_extra_excludes := ""
 
+# --number keeps the numbering an author wrote. Without it mdformat rewrites
+# every ordered list to all-`1.`, which renders identically but produces a large
+# diff and loses the numbering in the source.
+
 # Reformat repository markdown with mdformat
 [group('fmt')]
 md-fmt:
-    uvx --python {{ md_python }} --from mdformat=={{ md_version }} --with mdformat-gfm=={{ md_gfm_version }} mdformat --wrap {{ md_wrap }} {{ md_excludes }} {{ md_site_exclude }} {{ md_extra_excludes }} .
+    uvx --python {{ md_python }} --from mdformat=={{ md_version }} --with mdformat-gfm=={{ md_gfm_version }} mdformat --number --wrap {{ md_wrap }} {{ md_excludes }} {{ md_site_exclude }} {{ md_extra_excludes }} .
 
 # Check repository markdown formatting
 [group('fmt')]
 md-fmt-check:
-    uvx --python {{ md_python }} --from mdformat=={{ md_version }} --with mdformat-gfm=={{ md_gfm_version }} mdformat --check --wrap {{ md_wrap }} {{ md_excludes }} {{ md_site_exclude }} {{ md_extra_excludes }} .
+    uvx --python {{ md_python }} --from mdformat=={{ md_version }} --with mdformat-gfm=={{ md_gfm_version }} mdformat --check --number --wrap {{ md_wrap }} {{ md_excludes }} {{ md_site_exclude }} {{ md_extra_excludes }} .
