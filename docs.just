@@ -16,8 +16,8 @@
 # DEALINGS IN THE SOFTWARE.
 # Documentation recipes for osapi-io projects.
 
-host := env("DOCS_HOST", "localhost")
-port := env("DOCS_PORT", "3001")
+host := env("JUST_DOCS_HOST", "localhost")
+port := env("JUST_DOCS_PORT", "3001")
 
 # Install bun packages
 [group('setup')]

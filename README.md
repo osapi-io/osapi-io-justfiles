@@ -74,6 +74,14 @@ test: go::test go::docs-check bats::test
 
 ## ✨ Available Recipes
 
+Modules are moving into their own directories, each documenting itself:
+
+| Module | Description | Docs |
+|---|---|---|
+| `md` | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md) |
+
+Modules not yet moved are documented inline below.
+
 ### go.just
 
 | Recipe | Description |
@@ -128,8 +136,8 @@ test: go::test go::docs-check bats::test
 
 **Environment variables:**
 
-- `DOCS_HOST` - dev server host (default: `localhost`)
-- `DOCS_PORT` - dev server port (default: `3001`)
+- `JUST_DOCS_HOST` - dev server host (default: `localhost`)
+- `JUST_DOCS_PORT` - dev server port (default: `3001`)
 
 ### docker.just
 

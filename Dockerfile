@@ -1,3 +1,3 @@
 FROM scratch
 
-COPY *.just /
+COPY *.just */*.just /
