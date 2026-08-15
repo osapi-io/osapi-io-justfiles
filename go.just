@@ -133,7 +133,7 @@ unit-cov-map: unit-cov
 
 # Test all (mod, fmt check, vet, coverage)
 [group('test')]
-test: mod fmt-check vet unit-cov
+test: mod fmt-check vet unit-cov-check
 
 # --- Fmt ---
 
