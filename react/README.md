@@ -9,12 +9,7 @@ Builds, lints, formats, and serves a React application with
 `react.just` is consumed with `import?` rather than `mod?`. Its recipes are flat
 and prefixed, so it needs no `.mod.just` shim.
 
-The importing justfile **must** define `react_dir` — the directory holding the
-React application, relative to the repository root:
-
 ```just
-react_dir := "ui"
-
 import? '.just/remote/react.just'
 
 # Fetch shared justfiles from osapi-justfiles
@@ -23,12 +18,8 @@ fetch:
     curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/react/react.just -o .just/remote/react.just
 ```
 
-Use `react_dir := "."` when the application is at the repository root.
-
-This module does not define `react_dir`; omitting it fails at parse time. The
-rule, and why modules do not ship defaults for per-repository values, is the
-`justfiles` capability in
-[osapi-io/specs](https://github.com/osapi-io/specs).
+`react_dir` defaults to `.`, the repository root. Override it when the
+application lives elsewhere — see Configuration below.
 
 Then:
 
@@ -46,14 +37,20 @@ just react-generate     # Regenerate the TypeScript SDK with orval
 
 ## ⚙️ Configuration
 
-| Variable                 | Default                 | Purpose                         |
-| ------------------------ | ----------------------- | ------------------------------- |
-| `react_dir`              | **required**            | Directory holding the React app |
-| `JUST_REACT_FMT_PATTERN` | `src/**/*.{ts,tsx,css}` | Glob Prettier formats           |
+| Variable            | Default                 | Purpose                         |
+| ------------------- | ----------------------- | ------------------------------- |
+| `react_dir`         | `.`                     | Directory holding the React app |
+| `react_fmt_pattern` | `src/**/*.{ts,tsx,css}` | Glob Prettier formats           |
 
-`react_dir` is a justfile variable because it differs per repository.
-`JUST_REACT_FMT_PATTERN` is an environment variable because it is an optional
-knob with a sensible default.
+Override by setting `allow-duplicate-variables` and assigning again:
+
+```just
+set allow-duplicate-variables := true
+
+import? '.just/remote/react.just'
+
+react_dir := "ui"
+```
 
 ## 📄 License
 

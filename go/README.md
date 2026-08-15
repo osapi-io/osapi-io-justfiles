@@ -37,35 +37,35 @@ just go-generate           # Run go generate
 
 ## ⚙️ Configuration
 
-`go_coverage_target` is **required** — see below. The rest have defaults:
+| Variable             | Default     | Purpose                                  |
+| -------------------- | ----------- | ---------------------------------------- |
+| `go_coverage_target` | `100`       | Minimum total coverage; below this fails |
+| `go_coverage_dir`    | `.coverage` | Where the profile is written             |
+| `go_main_package`    | `main.go`   | Entry point for builds                   |
+| `go_fmt_excludes`    | (empty)     | Paths gofumpt and golines skip           |
 
-| Variable          | Default     | Purpose                        |
-| ----------------- | ----------- | ------------------------------ |
-| `go_coverage_dir` | `.coverage` | Where the profile is written   |
-| `go_main_package` | `main.go`   | Entry point for builds         |
-| `go_fmt_excludes` | (empty)     | Paths gofumpt and golines skip |
+### Overriding a default
 
-Each also reads an environment variable — `JUST_COVERAGE_DIR`,
-`JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in CI, where there is no
-justfile to edit.
-
-### Declaring the coverage target
-
-The consuming justfile must declare `go_coverage_target`; this module does not
-define it:
+Set `allow-duplicate-variables` and assign the variable again:
 
 ```just
-go_coverage_target := "100"
+set allow-duplicate-variables := true
 
 import? '.just/remote/go.just'
+
+go_coverage_target := "99.9"
 ```
 
-Omitting it fails at parse time. The rule, and why modules do not ship defaults
-for per-repository values, is the `justfiles` capability in
-[osapi-io/specs](https://github.com/osapi-io/specs).
+The assignment is in scope when just parses the file, so `just go-unit-cov-check`
+and `just test` agree, and a one-off override works on the command line:
 
-The `env()`-backed variables above are for continuous integration, where there
-is no justfile to edit.
+```bash
+just go_coverage_target=95 go-unit-cov-check
+```
+
+Do not use `export` for this. It reaches child processes but not the parse of
+its own file, so a recipe run by name would use the default while the same
+recipe reached through another recipe used the override.
 
 ## 📄 License
 

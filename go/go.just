@@ -25,13 +25,14 @@
 # that depends on `go::deps`.
 
 go_git_root := `git rev-parse --show-toplevel`
-go_main_package := env("JUST_MAIN_PACKAGE", "main.go")
-go_coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
+go_main_package := "main.go"
+go_coverage_dir := ".coverage"
 
-# go_coverage_target is declared by the consuming justfile, not here. See the
-# justfiles capability in osapi-io/specs for why, and go/README.md for how.
+# Minimum total coverage, enforced by `go-unit-cov-check`. A consuming justfile
+# overrides this by setting `allow-duplicate-variables` and assigning it again.
 
-go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
+go_coverage_target := "100"
+go_fmt_excludes := ""
 go_os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # --- Private dependency recipes ---
