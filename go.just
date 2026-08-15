@@ -111,10 +111,19 @@ unit-cov: _cov-deps
 unit-cov-check: unit-cov
     #!/usr/bin/env bash
     set -euo pipefail
-    total=$(go tool cover -func={{ coverage_dir }}/cover.out | awk '$1=="total:"{print $NF}' | tr -d '%')
-    awk -v t="$total" -v g="{{ coverage_target }}" 'BEGIN{exit !(t+0 < g+0)}' \
-      && { echo "coverage ${total}% is below target {{ coverage_target }}%"; exit 1; } \
-      || echo "coverage ${total}% meets target {{ coverage_target }}%"
+    # Compute from the profile's statement counts, not `go tool cover -func`,
+    # whose total: line rounds to one decimal — 99.94% prints as 100.0% and
+    # would pass a 100% gate.
+    read -r total covered < <(
+      awk 'NR > 1 { s += $2; if ($3 > 0) c += $2 } END { printf "%d %d", s, c }' \
+        {{ coverage_dir }}/cover.out
+    )
+    pct=$(awk -v c="$covered" -v s="$total" 'BEGIN { printf "%.4f", (s ? c / s * 100 : 0) }')
+    if awk -v p="$pct" -v g="{{ coverage_target }}" 'BEGIN { exit !(p + 0 < g + 0) }'; then
+      echo "coverage ${pct}% is below target {{ coverage_target }}% ($((total - covered)) of ${total} statements uncovered)"
+      exit 1
+    fi
+    echo "coverage ${pct}% meets target {{ coverage_target }}%"
 
 # Show files without 100% coverage and open heatmap of only those files
 [group('test')]
