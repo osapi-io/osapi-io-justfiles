@@ -23,6 +23,15 @@ files are fetched via a `fetch` recipe.
 - `bats.mod.just` - Module shim for bats.just (sets working directory to `test/`)
 - `docs.just` - Docusaurus documentation recipes
 - `docs.mod.just` - Module shim for docs.just (sets working directory to `docs/`)
+- `md/md.just` - Repository markdown formatting recipes (mdformat via uvx).
+  Consumed with `import?` rather than `mod?` — recipes are flat and prefixed
+  (`md-fmt`, `md-fmt-check`), so there is no `md.mod.just` shim.
+- `md/README.md` - Usage, recipes, and env vars for the md module
+
+Modules are migrating into per-module directories, each with its own
+`README.md`; the root `README.md` links to them from a table. `md/` is the
+first. Modules still at the root are documented inline in the root README.
+New modules should be created as a directory from the start.
 - `docker.just` - Docker build and push recipes
 - `docker.mod.just` - Module shim for docker.just (sets working directory to project root)
 - `just.just` - Justfile formatting recipes
