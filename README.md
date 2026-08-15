@@ -184,9 +184,8 @@ COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/re
 
 ## 🤝 Contributing
 
-See the [Development](docs/development.md) guide for prerequisites, setup,
-and conventions. See the [Contributing](docs/contributing.md) guide before
-submitting a PR.
+See the [Contributing](CONTRIBUTING.md) guide for prerequisites, setup,
+conventions, and the PR workflow.
 
 ## 📄 License
 
