@@ -27,6 +27,11 @@
 git_root := `git rev-parse --show-toplevel`
 main_package := env("JUST_MAIN_PACKAGE", "main.go")
 coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
+
+# Minimum total coverage, enforced by `unit-cov-check`. Declared again in each
+# consuming repository's codecov.yml — change both together.
+
+coverage_target := env("JUST_COVERAGE_TARGET", "100")
 go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
 os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
@@ -100,6 +105,16 @@ unit-cov: _cov-deps
     grep -v -f .coverignore {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cover.tmp && mv {{ coverage_dir }}/cover.tmp {{ coverage_dir }}/cover.out
     go tool github.com/boumenot/gocover-cobertura < {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cobertura.xml
     go tool cover -func={{ coverage_dir }}/cover.out
+
+# Fail when total coverage is below coverage_target
+[group('test')]
+unit-cov-check: unit-cov
+    #!/usr/bin/env bash
+    set -euo pipefail
+    total=$(go tool cover -func={{ coverage_dir }}/cover.out | awk '$1=="total:"{print $NF}' | tr -d '%')
+    awk -v t="$total" -v g="{{ coverage_target }}" 'BEGIN{exit !(t+0 < g+0)}' \
+      && { echo "coverage ${total}% is below target {{ coverage_target }}%"; exit 1; } \
+      || echo "coverage ${total}% meets target {{ coverage_target }}%"
 
 # Show files without 100% coverage and open heatmap of only those files
 [group('test')]
