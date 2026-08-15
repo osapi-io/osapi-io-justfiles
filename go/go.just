@@ -24,41 +24,48 @@
 # Projects can add extra tools by defining their own `deps` recipe
 # that depends on `go::deps`.
 
-git_root := `git rev-parse --show-toplevel`
-main_package := env("JUST_MAIN_PACKAGE", "main.go")
-coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
+go_git_root := `git rev-parse --show-toplevel`
+go_main_package := env("JUST_MAIN_PACKAGE", "main.go")
+go_coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
 
-# Minimum total coverage, enforced by `unit-cov-check`. Declared again in each
-# consuming repository's codecov.yml — change both together.
+# Minimum total coverage, enforced by `go-unit-cov-check`. Declared again in
+# each consuming repository's codecov.yml — change both together.
+#
+# A consumer overrides it by assigning after the import, which needs
+# `set allow-duplicate-variables := true` in the consuming justfile:
+#
+#     set allow-duplicate-variables := true
+#     import? '.just/remote/go.just'
+#     go_coverage_target := "99.9"
 
-coverage_target := env("JUST_COVERAGE_TARGET", "100")
+go_coverage_target := env("JUST_COVERAGE_TARGET", "100")
 go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
-os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
+go_os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
 # --- Private dependency recipes ---
 
 [private]
-_fmt-deps:
+_go-fmt-deps:
     go get -tool mvdan.cc/gofumpt
     go get -tool github.com/segmentio/golines
 
 [private]
-_vet-deps:
+_go-vet-deps:
     go get -tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 
 [private]
-_cov-deps:
+_go-cov-deps:
     go get -tool github.com/boumenot/gocover-cobertura
 
 # --- Setup ---
 
 # Install all tool dependencies
 [group('setup')]
-deps: _fmt-deps _vet-deps _cov-deps
+go-deps: _go-fmt-deps _go-vet-deps _go-cov-deps
 
 # Module maintenance (download + tidy)
 [group('setup')]
-mod:
+go-mod:
     #!/usr/bin/env bash
     go mod download
     go mod tidy
@@ -72,15 +79,15 @@ mod:
 
 # Report likely mistakes in packages
 [group('lint')]
-vet: _vet-deps
-    go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run --config {{ git_root }}/.golangci.yml
+go-vet: _go-vet-deps
+    go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run --config {{ go_git_root }}/.golangci.yml
 
 # --- Dev ---
 
 # Compile and run Go program
 [group('dev')]
 run *args:
-    go run {{ main_package }} {{ args }}
+    go run {{ go_main_package }} {{ args }}
 
 # --- Test ---
 # go_packages lists all Go packages excluding node_modules (which may
@@ -90,62 +97,62 @@ go_packages := "$(go list ./... | grep -v /node_modules/)"
 
 # Test packages
 [group('test')]
-unit:
-    go test {{ os_tags }} -parallel 5 -race -v {{ go_packages }}
+go-unit:
+    go test {{ go_os_tags }} -parallel 5 -race -v {{ go_packages }}
 
 # Run integration tests (requires running service)
-unit-int:
+go-unit-int:
     go test -tags integration -v -count=1 ./test/integration/...
 
 # Generate coverage
 [group('test')]
-unit-cov: _cov-deps
-    mkdir -p {{ coverage_dir }}
-    go test {{ os_tags }} -race -coverprofile={{ coverage_dir }}/cover.out -v {{ go_packages }}
-    grep -v -f .coverignore {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cover.tmp && mv {{ coverage_dir }}/cover.tmp {{ coverage_dir }}/cover.out
-    go tool github.com/boumenot/gocover-cobertura < {{ coverage_dir }}/cover.out > {{ coverage_dir }}/cobertura.xml
-    go tool cover -func={{ coverage_dir }}/cover.out
+go-unit-cov: _go-cov-deps
+    mkdir -p {{ go_coverage_dir }}
+    go test {{ go_os_tags }} -race -coverprofile={{ go_coverage_dir }}/cover.out -v {{ go_packages }}
+    grep -v -f .coverignore {{ go_coverage_dir }}/cover.out > {{ go_coverage_dir }}/cover.tmp && mv {{ go_coverage_dir }}/cover.tmp {{ go_coverage_dir }}/cover.out
+    go tool github.com/boumenot/gocover-cobertura < {{ go_coverage_dir }}/cover.out > {{ go_coverage_dir }}/cobertura.xml
+    go tool cover -func={{ go_coverage_dir }}/cover.out
 
-# Fail when total coverage is below coverage_target
+# Fail when total coverage is below go_coverage_target
 [group('test')]
-unit-cov-check: unit-cov
+go-unit-cov-check: go-unit-cov
     #!/usr/bin/env bash
     set -euo pipefail
-    total=$(go tool cover -func={{ coverage_dir }}/cover.out | awk '$1=="total:"{print $NF}' | tr -d '%')
-    awk -v t="$total" -v g="{{ coverage_target }}" 'BEGIN{exit !(t+0 < g+0)}' \
-      && { echo "coverage ${total}% is below target {{ coverage_target }}%"; exit 1; } \
-      || echo "coverage ${total}% meets target {{ coverage_target }}%"
+    total=$(go tool cover -func={{ go_coverage_dir }}/cover.out | awk '$1=="total:"{print $NF}' | tr -d '%')
+    awk -v t="$total" -v g="{{ go_coverage_target }}" 'BEGIN{exit !(t+0 < g+0)}' \
+      && { echo "coverage ${total}% is below target {{ go_coverage_target }}%"; exit 1; } \
+      || echo "coverage ${total}% meets target {{ go_coverage_target }}%"
 
 # Show files without 100% coverage and open heatmap of only those files
 [group('test')]
-unit-cov-gaps: unit-cov
+go-unit-cov-gaps: go-unit-cov
     #!/usr/bin/env bash
     set -euo pipefail
-    gap_files=$(go tool cover -func={{ coverage_dir }}/cover.out | grep -v '100.0%' | grep -v '^total:' | awk -F: '{print $1}' | sort -u || true)
+    gap_files=$(go tool cover -func={{ go_coverage_dir }}/cover.out | grep -v '100.0%' | grep -v '^total:' | awk -F: '{print $1}' | sort -u || true)
     if [ -z "$gap_files" ]; then echo "No coverage gaps found."; exit 0; fi
-    { head -1 {{ coverage_dir }}/cover.out; grep -F -f <(echo "$gap_files") {{ coverage_dir }}/cover.out; } > {{ coverage_dir }}/gaps.out
-    go tool cover -html={{ coverage_dir }}/gaps.out
+    { head -1 {{ go_coverage_dir }}/cover.out; grep -F -f <(echo "$gap_files") {{ go_coverage_dir }}/cover.out; } > {{ go_coverage_dir }}/gaps.out
+    go tool cover -html={{ go_coverage_dir }}/gaps.out
 
 # Generate coverage and show heatmap
 [group('test')]
-unit-cov-map: unit-cov
-    go tool cover -html={{ coverage_dir }}/cover.out
+go-unit-cov-map: go-unit-cov
+    go tool cover -html={{ go_coverage_dir }}/cover.out
 
 # Test all (mod, fmt check, vet, coverage)
 [group('test')]
-test: mod fmt-check vet unit-cov-check
+go-test: go-mod go-fmt-check go-vet go-unit-cov-check
 
 # --- Fmt ---
 
 # Reformat Go files with gofumpt + golines
 [group('fmt')]
-fmt: _fmt-deps
+go-fmt: _go-fmt-deps
     find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool mvdan.cc/gofumpt -l -w
     find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool github.com/segmentio/golines --base-formatter="go tool mvdan.cc/gofumpt" -w
 
 # Check Go file formatting
 [group('fmt')]
-fmt-check: _fmt-deps
+go-fmt-check: _go-fmt-deps
     test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool mvdan.cc/gofumpt -d -e | tee /dev/stderr)"
     test -z "$(find . -type f -name '*.go' ! -name '*.gen.go' ! -name '*.pb.go' ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/node_modules/*' {{ go_fmt_excludes }} | xargs go tool github.com/segmentio/golines --dry-run --base-formatter="go tool mvdan.cc/gofumpt" -l | tee /dev/stderr)"
 
@@ -153,5 +160,5 @@ fmt-check: _fmt-deps
 
 # Generate Go files by processing source
 [group('codegen')]
-generate:
+go-generate:
     go generate ./...
