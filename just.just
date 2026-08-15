@@ -15,13 +15,18 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 # Justfile formatting recipes for osapi-io projects.
+#
+# go/ and react/ are skipped: those modules reference variables their consuming
+# justfile declares, so neither parses on its own and a per-file check reports
+# an undefined variable rather than a formatting fault. Consuming repositories
+# have no such directories, and never lint fetched modules anyway.
 
 # Reformat justfiles with canonical style
 [group('fmt')]
 fmt:
     #!/usr/bin/env bash
     set -euo pipefail
-    find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/.just/*' | while read -r f; do
+    find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/.just/*' ! -path './go/*' ! -path './react/*' | while read -r f; do
         just --fmt --unstable --justfile "$f"
     done
 
@@ -37,5 +42,5 @@ fmt-check:
             just --fmt --check --unstable --justfile "$f" 2>&1 || true
             failed=1
         fi
-    done < <(find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/.just/*')
+    done < <(find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/.just/*' ! -path './go/*' ! -path './react/*')
     exit $failed
