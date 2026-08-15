@@ -41,7 +41,7 @@ md_python := "3.13"
 # component syntax mdformat cannot parse. The docusaurus module owns and formats
 # it. Set to "" in a repository that publishes no site.
 md_site_dir := "docs"
-md_excludes := "--exclude '.claude/**' --exclude 'node_modules/**' --exclude '.worktrees/**' --exclude '.just/**'"
+md_excludes := "--exclude '**/.claude/**' --exclude '**/node_modules/**' --exclude '**/.worktrees/**' --exclude '**/.just/**'"
 md_site_exclude := if md_site_dir == "" { "" } else { "--exclude '" + md_site_dir + "/**'" }
 md_extra_excludes := ""
 
