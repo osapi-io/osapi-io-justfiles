@@ -79,6 +79,7 @@ Modules are moving into their own directories, each documenting itself:
 | Module | Description | Docs |
 |---|---|---|
 | `md` | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md) |
+| `react` | React app build, lint, format, SDK codegen (Bun) | [react/README.md](react/README.md) |
 
 Modules not yet moved are documented inline below.
 
@@ -157,23 +158,6 @@ using `curl`:
 ```dockerfile
 COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
 ```
-
-### react.just
-
-| Recipe | Description |
-|---|---|
-| `deps` | Install all dependencies |
-| `dev` | Start development server |
-| `build` | Production build |
-| `lint` | Run ESLint |
-| `test` | Run all checks (fmt, lint, build) |
-| `fmt` | Auto-format with Prettier |
-| `fmt-check` | Check formatting |
-| `generate` | Generate TypeScript SDK with orval |
-
-**Environment variables:**
-
-- `JUST_FMT_PATTERN` - Prettier glob pattern (default: `src/**/*.{ts,tsx,css}`)
 
 ### just.just
 

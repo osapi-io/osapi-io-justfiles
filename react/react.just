@@ -20,65 +20,68 @@
 # handles formatting and ESLint handles linting, both configured by the
 # consuming project.
 #
-# Projects can extend these by defining their own recipes that depend on
-# the `react::` namespace.
+# The consuming justfile MUST define `react_dir` — the directory holding the
+# React application, relative to the repository root. This module does not
+# define it: a flat import shares one scope, so a default here could not be
+# overridden, and the path differs per repository.
+#
+#     react_dir := "ui"
+#     import? '.just/remote/react.just'
+#
+# Omitting it fails at parse time with "Variable `react_dir` not defined",
+# rather than silently running in the wrong directory.
 
-# Directory holding the React application, relative to the repository root.
-# Set JUST_REACT_DIR when the app is not at the root — osapi's lives in ui/.
-# Consumers previously forked react.mod.just to change its working directory,
-# which meant committing a fetched file.
-react_dir := env("JUST_REACT_DIR", ".")
-fmt_pattern := env("JUST_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
+react_fmt_pattern := env("JUST_REACT_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
 
 # --- Setup ---
 
 # Install all dependencies
 [group('setup')]
-deps:
+react-deps:
     cd {{ react_dir }} && bun install
 
 # --- Dev ---
 
 # Start development server
 [group('dev')]
-dev:
+react-dev:
     cd {{ react_dir }} && bun run dev
 
 # --- Build ---
 
 # Production build
 [group('build')]
-build:
+react-build:
     cd {{ react_dir }} && bun run build
 
 # --- Lint ---
 
 # Report likely mistakes in source
 [group('lint')]
-lint:
+react-lint:
     cd {{ react_dir }} && bun run lint
 
 # --- Test ---
 
 # Test all (fmt check, lint, build)
 [group('test')]
-test: fmt-check lint build
+react-test: react-fmt-check react-lint react-build
 
 # --- Fmt ---
 
 # Reformat source with Prettier
 [group('fmt')]
-fmt:
-    cd {{ react_dir }} && bunx prettier --write "{{ fmt_pattern }}"
+react-fmt:
+    cd {{ react_dir }} && bunx prettier --write "{{ react_fmt_pattern }}"
 
 # Check source formatting
 [group('fmt')]
-fmt-check:
-    cd {{ react_dir }} && bunx prettier --check "{{ fmt_pattern }}"
+react-fmt-check:
+    cd {{ react_dir }} && bunx prettier --check "{{ react_fmt_pattern }}"
 
 # --- Codegen ---
 
 # Generate TypeScript SDK from OpenAPI spec
 [group('codegen')]
-generate:
+react-generate:
     cd {{ react_dir }} && npx orval
