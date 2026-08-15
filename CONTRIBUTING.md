@@ -98,11 +98,6 @@ prefix their variables with the module name as well — a generic name like
 All `.just` files must include the MIT license header at the top, as `#`
 comments, with year 2026.
 
-### Parity with taskfiles
-
-These recipes mirror `osapi-io-taskfiles`. When updating a recipe here,
-consider whether the corresponding taskfile needs the same change.
-
 ## Before committing
 
 ```bash
@@ -152,6 +147,12 @@ be reasonable to split it in a few). Git squash and rebase is your friend!
   discuss them, open the PR as a draft and add a comment to start a
   discussion. Using comments rather than the PR description allows the
   description to be updated later while preserving any discussions.
+
+## AI usage
+
+All contributions are subject to the [AI Usage Policy](AI_POLICY.md) — disclose
+the tool you used, and make sure you can explain what your change does without
+the aid of AI tools.
 
 ## FAQ
 
