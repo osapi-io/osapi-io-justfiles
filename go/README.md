@@ -37,33 +37,38 @@ just go-generate           # Run go generate
 
 ## ⚙️ Configuration
 
-| Variable             | Default     | Purpose                                  |
-| -------------------- | ----------- | ---------------------------------------- |
-| `go_coverage_target` | `100`       | Minimum total coverage; below this fails |
-| `go_coverage_dir`    | `.coverage` | Where the profile is written             |
-| `go_main_package`    | `main.go`   | Entry point for builds                   |
-| `go_fmt_excludes`    | (empty)     | Paths gofumpt and golines skip           |
+`go_coverage_target` is **required** — see below. The rest have defaults:
 
-Each also reads an environment variable — `JUST_COVERAGE_TARGET`,
-`JUST_COVERAGE_DIR`, `JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in
-CI, where there is no justfile to edit.
+| Variable          | Default     | Purpose                        |
+| ----------------- | ----------- | ------------------------------ |
+| `go_coverage_dir` | `.coverage` | Where the profile is written   |
+| `go_main_package` | `main.go`   | Entry point for builds         |
+| `go_fmt_excludes` | (empty)     | Paths gofumpt and golines skip |
 
-### Overriding from the consuming justfile
+Each also reads an environment variable — `JUST_COVERAGE_DIR`,
+`JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in CI, where there is no
+justfile to edit.
 
-Assign after the import. This needs `set allow-duplicate-variables := true`,
-because just otherwise rejects a variable with two definitions:
+### Declaring the coverage target
+
+The consuming justfile must declare `go_coverage_target`. This module does not
+define it:
 
 ```just
-set allow-duplicate-variables := true
+go_coverage_target := "100"
 
 import? '.just/remote/go.just'
-
-go_coverage_target := "99.9"
 ```
 
-An `export` in the consuming justfile does **not** work. `env()` resolves
-against the process environment when just parses the file, and `export` only
-populates the environment of recipes — so the module would keep its default.
+A flat import shares one scope, so a default here could not be overridden — just
+rejects a variable with two definitions, and `set allow-duplicate-variables`
+would disable that check for the entire justfile. Omitting it fails at parse
+time rather than silently gating at a number nobody chose.
+
+An `export` in the consuming justfile does **not** work for the `env()`-backed
+variables above. `env()` resolves against the process environment when just
+parses the file, and `export` only populates the environment of recipes — so
+those are for CI, where there is no justfile to edit.
 
 ## 📄 License
 
