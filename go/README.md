@@ -37,33 +37,35 @@ just go-generate           # Run go generate
 
 ## ⚙️ Configuration
 
-| Variable             | Default     | Purpose                                  |
-| -------------------- | ----------- | ---------------------------------------- |
-| `go_coverage_target` | `100`       | Minimum total coverage; below this fails |
-| `go_coverage_dir`    | `.coverage` | Where the profile is written             |
-| `go_main_package`    | `main.go`   | Entry point for builds                   |
-| `go_fmt_excludes`    | (empty)     | Paths gofumpt and golines skip           |
+`go_coverage_target` is **required** — see below. The rest have defaults:
 
-Each also reads an environment variable — `JUST_COVERAGE_TARGET`,
-`JUST_COVERAGE_DIR`, `JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in
-CI, where there is no justfile to edit.
+| Variable          | Default     | Purpose                        |
+| ----------------- | ----------- | ------------------------------ |
+| `go_coverage_dir` | `.coverage` | Where the profile is written   |
+| `go_main_package` | `main.go`   | Entry point for builds         |
+| `go_fmt_excludes` | (empty)     | Paths gofumpt and golines skip |
 
-### Overriding from the consuming justfile
+Each also reads an environment variable — `JUST_COVERAGE_DIR`,
+`JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in CI, where there is no
+justfile to edit.
 
-Assign after the import. This needs `set allow-duplicate-variables := true`,
-because just otherwise rejects a variable with two definitions:
+### Declaring the coverage target
+
+The consuming justfile must declare `go_coverage_target`; this module does not
+define it:
 
 ```just
-set allow-duplicate-variables := true
+go_coverage_target := "100"
 
 import? '.just/remote/go.just'
-
-go_coverage_target := "99.9"
 ```
 
-An `export` in the consuming justfile does **not** work. `env()` resolves
-against the process environment when just parses the file, and `export` only
-populates the environment of recipes — so the module would keep its default.
+Omitting it fails at parse time. The rule, and why modules do not ship defaults
+for per-repository values, is the `justfiles` capability in
+[osapi-io/specs](https://github.com/osapi-io/specs).
+
+The `env()`-backed variables above are for continuous integration, where there
+is no justfile to edit.
 
 ## 📄 License
 
