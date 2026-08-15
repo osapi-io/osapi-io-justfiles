@@ -23,6 +23,11 @@
 # Projects can extend these by defining their own recipes that depend on
 # the `react::` namespace.
 
+# Directory holding the React application, relative to the repository root.
+# Set JUST_REACT_DIR when the app is not at the root — osapi's lives in ui/.
+# Consumers previously forked react.mod.just to change its working directory,
+# which meant committing a fetched file.
+react_dir := env("JUST_REACT_DIR", ".")
 fmt_pattern := env("JUST_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
 
 # --- Setup ---
@@ -30,28 +35,28 @@ fmt_pattern := env("JUST_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
 # Install all dependencies
 [group('setup')]
 deps:
-    bun install
+    cd {{ react_dir }} && bun install
 
 # --- Dev ---
 
 # Start development server
 [group('dev')]
 dev:
-    bun run dev
+    cd {{ react_dir }} && bun run dev
 
 # --- Build ---
 
 # Production build
 [group('build')]
 build:
-    bun run build
+    cd {{ react_dir }} && bun run build
 
 # --- Lint ---
 
 # Report likely mistakes in source
 [group('lint')]
 lint:
-    bun run lint
+    cd {{ react_dir }} && bun run lint
 
 # --- Test ---
 
@@ -64,16 +69,16 @@ test: fmt-check lint build
 # Reformat source with Prettier
 [group('fmt')]
 fmt:
-    bunx prettier --write "{{ fmt_pattern }}"
+    cd {{ react_dir }} && bunx prettier --write "{{ fmt_pattern }}"
 
 # Check source formatting
 [group('fmt')]
 fmt-check:
-    bunx prettier --check "{{ fmt_pattern }}"
+    cd {{ react_dir }} && bunx prettier --check "{{ fmt_pattern }}"
 
 # --- Codegen ---
 
 # Generate TypeScript SDK from OpenAPI spec
 [group('codegen')]
 generate:
-    npx orval
+    cd {{ react_dir }} && npx orval
