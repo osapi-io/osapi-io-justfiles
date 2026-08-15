@@ -67,20 +67,34 @@ each would undo the other. A repo may use both, but on disjoint paths. Since
 `md.just` scans the whole repo, a repo with a Docusaurus site under `docs/` must
 exclude it:
 
-```bash
-export JUST_MDFORMAT_EXCLUDES="--exclude 'docs/**'"
+```just
+set allow-duplicate-variables := true
+
+import? '.just/remote/md.just'
+
+md_extra_excludes := "--exclude 'docs/**'"
 ```
 
 Note that mdformat does not understand GitHub alert syntax (`> [!WARNING]`) and
 will reflow it into a plain blockquote. Use bold text for callouts in repos
 formatted by this module.
 
-## ⚙️ Environment variables
+## ⚙️ Configuration
 
-| Variable                    | Default | Description                                   |
-| --------------------------- | ------- | --------------------------------------------- |
-| `JUST_MDFORMAT_VERSION`     | `1.0.0` | mdformat version                              |
-| `JUST_MDFORMAT_GFM_VERSION` | `1.0.0` | mdformat-gfm plugin version                   |
-| `JUST_MDFORMAT_WRAP`        | `80`    | Line wrap width                               |
-| `JUST_MDFORMAT_EXCLUDES`    | (empty) | Extra `--exclude` flags added to the defaults |
-| `JUST_MDFORMAT_PYTHON`      | `3.13`  | Python interpreter (`--exclude` needs 3.13+)  |
+| Variable            | Default | Description                                   |
+| ------------------- | ------- | --------------------------------------------- |
+| `md_version`        | `1.0.0` | mdformat version                              |
+| `md_gfm_version`    | `1.0.0` | mdformat-gfm plugin version                   |
+| `md_wrap`           | `80`    | Line wrap width                               |
+| `md_extra_excludes` | (empty) | Extra `--exclude` flags added to the defaults |
+| `md_python`         | `3.13`  | Python interpreter (`--exclude` needs 3.13+)  |
+
+Override any of them by setting `allow-duplicate-variables` and assigning again:
+
+```just
+set allow-duplicate-variables := true
+
+import? '.just/remote/md.just'
+
+md_wrap := "100"
+```

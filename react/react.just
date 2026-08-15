@@ -31,7 +31,8 @@
 # Omitting it fails at parse time with "Variable `react_dir` not defined",
 # rather than silently running in the wrong directory.
 
-react_fmt_pattern := env("JUST_REACT_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
+react_dir := "."
+react_fmt_pattern := "src/**/*.{ts,tsx,css}"
 
 # --- Setup ---
 
