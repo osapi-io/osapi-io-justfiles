@@ -28,18 +28,8 @@ go_git_root := `git rev-parse --show-toplevel`
 go_main_package := env("JUST_MAIN_PACKAGE", "main.go")
 go_coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
 
-# Minimum total coverage, enforced by `go-unit-cov-check`.
-#
-# This module deliberately does not define it. A flat import shares one scope,
-# so a default here could not be overridden -- just rejects a variable with two
-# definitions, and `set allow-duplicate-variables` disables that check for the
-# whole justfile. The consuming justfile declares it instead:
-#
-#     go_coverage_target := "100"
-#
-# Declared again in that repository's codecov.yml -- change both together.
-# Omitting it fails at parse time rather than silently gating at a number
-# nobody chose.
+# go_coverage_target is declared by the consuming justfile, not here. See the
+# justfiles capability in osapi-io/specs for why, and go/README.md for how.
 
 go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
 go_os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }

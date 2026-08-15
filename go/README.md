@@ -51,7 +51,7 @@ justfile to edit.
 
 ### Declaring the coverage target
 
-The consuming justfile must declare `go_coverage_target`. This module does not
+The consuming justfile must declare `go_coverage_target`; this module does not
 define it:
 
 ```just
@@ -60,15 +60,12 @@ go_coverage_target := "100"
 import? '.just/remote/go.just'
 ```
 
-A flat import shares one scope, so a default here could not be overridden — just
-rejects a variable with two definitions, and `set allow-duplicate-variables`
-would disable that check for the entire justfile. Omitting it fails at parse
-time rather than silently gating at a number nobody chose.
+Omitting it fails at parse time. The rule, and why modules do not ship defaults
+for per-repository values, is the `justfiles` capability in
+[osapi-io/specs](https://github.com/osapi-io/specs).
 
-An `export` in the consuming justfile does **not** work for the `env()`-backed
-variables above. `env()` resolves against the process environment when just
-parses the file, and `export` only populates the environment of recipes — so
-those are for CI, where there is no justfile to edit.
+The `env()`-backed variables above are for continuous integration, where there
+is no justfile to edit.
 
 ## 📄 License
 
