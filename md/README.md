@@ -47,6 +47,12 @@ the recipe, and formatting options are passed on the command line. There is no
 The `mdformat-gfm` plugin is not optional. Without it mdformat is
 CommonMark-only and will silently mangle GitHub-flavored tables into prose.
 
+The recipes pin the interpreter to Python 3.13 via `uvx --python`. mdformat's
+`--exclude` flag requires 3.13 or newer; on an older interpreter the flag does
+not exist and mdformat exits 2 with `unrecognized arguments`. Pinning makes the
+behavior identical on a laptop and in CI, and uv downloads the interpreter if it
+is missing.
+
 ## 🚫 Exclusions
 
 Excluded by default: `node_modules/`, `.worktrees/`, `.claude/`, and `.just/`.
@@ -77,3 +83,4 @@ formatted by this module.
 | `JUST_MDFORMAT_GFM_VERSION` | `1.0.0` | mdformat-gfm plugin version                   |
 | `JUST_MDFORMAT_WRAP`        | `80`    | Line wrap width                               |
 | `JUST_MDFORMAT_EXCLUDES`    | (empty) | Extra `--exclude` flags added to the defaults |
+| `JUST_MDFORMAT_PYTHON`      | `3.13`  | Python interpreter (`--exclude` needs 3.13+)  |
