@@ -49,23 +49,16 @@ Each also reads an environment variable — `JUST_COVERAGE_DIR`,
 `JUST_MAIN_PACKAGE`, `JUST_GO_FMT_EXCLUDES` — for use in CI, where there is no
 justfile to edit.
 
-### Declaring the coverage target
+### Overriding a default
 
-The consuming justfile must declare `go_coverage_target`; this module does not
-define it:
+Set the environment variable on the recipe that invokes the module. Recipes in a
+consuming justfile call module recipes as child processes, which inherit it:
 
 ```just
-go_coverage_target := "100"
-
-import? '.just/remote/go.just'
+export JUST_COVERAGE_TARGET := "99.9"
 ```
 
-Omitting it fails at parse time. The rule, and why modules do not ship defaults
-for per-repository values, is the `justfiles` capability in
-[osapi-io/specs](https://github.com/osapi-io/specs).
-
-The `env()`-backed variables above are for continuous integration, where there
-is no justfile to edit.
+The module keeps its own default, so it still parses and lints on its own.
 
 ## 📄 License
 

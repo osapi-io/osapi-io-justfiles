@@ -25,11 +25,6 @@ fetch:
 
 Use `react_dir := "."` when the application is at the repository root.
 
-This module does not define `react_dir`; omitting it fails at parse time. The
-rule, and why modules do not ship defaults for per-repository values, is the
-`justfiles` capability in
-[osapi-io/specs](https://github.com/osapi-io/specs).
-
 Then:
 
 ```bash
@@ -54,6 +49,16 @@ just react-generate     # Regenerate the TypeScript SDK with orval
 `react_dir` is a justfile variable because it differs per repository.
 `JUST_REACT_FMT_PATTERN` is an environment variable because it is an optional
 knob with a sensible default.
+
+### Overriding the directory
+
+Set the environment variable in the consuming justfile:
+
+```just
+export JUST_REACT_DIR := "ui"
+```
+
+The module keeps its own default, so it still parses and lints on its own.
 
 ## 📄 License
 

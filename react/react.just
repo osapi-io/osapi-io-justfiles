@@ -30,7 +30,11 @@
 #
 # Omitting it fails at parse time with "Variable `react_dir` not defined",
 # rather than silently running in the wrong directory.
+# Directory holding the React application. A consuming repository whose app is
+# not at the root sets JUST_REACT_DIR on the recipe that invokes these, so this
+# file still parses on its own.
 
+react_dir := env("JUST_REACT_DIR", ".")
 react_fmt_pattern := env("JUST_REACT_FMT_PATTERN", "src/**/*.{ts,tsx,css}")
 
 # --- Setup ---

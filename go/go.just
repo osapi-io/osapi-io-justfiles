@@ -28,9 +28,11 @@ go_git_root := `git rev-parse --show-toplevel`
 go_main_package := env("JUST_MAIN_PACKAGE", "main.go")
 go_coverage_dir := env("JUST_COVERAGE_DIR", ".coverage")
 
-# go_coverage_target is declared by the consuming justfile, not here. See the
-# justfiles capability in osapi-io/specs for why, and go/README.md for how.
+# Minimum total coverage, enforced by `go-unit-cov-check`. A consuming
+# repository that needs a different figure sets JUST_COVERAGE_TARGET on the
+# recipe that invokes this one, so this file still parses on its own.
 
+go_coverage_target := env("JUST_COVERAGE_TARGET", "100")
 go_fmt_excludes := env("JUST_GO_FMT_EXCLUDES", "")
 go_os_tags := if os() == "linux" { `if grep -iq 'ubuntu' /etc/os-release 2>/dev/null; then echo '-tags=ubuntu'; fi` } else { "" }
 
