@@ -79,6 +79,7 @@ Modules are moving into their own directories, each documenting itself:
 | Module | Description | Docs |
 |---|---|---|
 | `md` | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md) |
+| `just` | Justfile formatting (`just --fmt`) | [just/README.md](just/README.md) |
 
 Modules not yet moved are documented inline below.
 
@@ -174,13 +175,6 @@ COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/re
 **Environment variables:**
 
 - `JUST_FMT_PATTERN` - Prettier glob pattern (default: `src/**/*.{ts,tsx,css}`)
-
-### just.just
-
-| Recipe | Description |
-|---|---|
-| `fmt` | Reformat justfiles with canonical style |
-| `fmt-check` | Check justfile formatting |
 
 ## 🤝 Contributing
 

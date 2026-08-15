@@ -34,8 +34,10 @@ first. Modules still at the root are documented inline in the root README.
 New modules should be created as a directory from the start.
 - `docker.just` - Docker build and push recipes
 - `docker.mod.just` - Module shim for docker.just (sets working directory to project root)
-- `just.just` - Justfile formatting recipes
-- `just.mod.just` - Module shim for just.just (sets working directory to project root)
+- `just/just.just` - Justfile formatting recipes. Consumed with `import?`
+  rather than `mod?` — recipes are flat and prefixed (`just-fmt`,
+  `just-fmt-check`), so there is no `just.mod.just` shim.
+- `just/README.md` - Usage and recipes for the just module
 - `Dockerfile` - Minimal scratch-based image shipping `.just` files
 - `.dockerignore` - Whitelists only `*.just` files for the Docker build context
 
