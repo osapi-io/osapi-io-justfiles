@@ -76,64 +76,28 @@ test: go::test go::docs-check bats::test
 
 Modules are moving into their own directories, each documenting itself:
 
-| Module | Description | Docs |
-|---|---|---|
-| `md` | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md) |
-| `react` | React app build, lint, format, SDK codegen (Bun) | [react/README.md](react/README.md) |
+| Module  | Description                                       | Docs                               |
+| ------- | ------------------------------------------------- | ---------------------------------- |
+| `go`    | Go build, test, coverage gate, format, lint       | [go/README.md](go/README.md)       |
+| `md`    | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md)       |
+| `react` | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md) |
 
 Modules not yet moved are documented inline below.
 
-### go.just
-
-| Recipe | Description |
-|---|---|
-| `deps` | Install all tool dependencies |
-| `mod` | Module maintenance (download + tidy) |
-| `vet` | Run golangci-lint |
-| `run *args` | Compile and run Go program |
-| `unit` | Run unit tests |
-| `unit-int` | Run integration tests (requires running service) |
-| `unit-cov` | Run tests with coverage |
-| `unit-cov-gaps` | Coverage gaps only with HTML heatmap |
-| `unit-cov-map` | Coverage with HTML heatmap |
-| `test` | Run all checks (mod, fmt, vet, coverage) |
-| `fmt` | Auto-format with gofumpt + golines |
-| `fmt-check` | Check formatting |
-| `generate` | Run go generate |
-| `docs` | Generate Go package docs with gomarkdoc |
-| `docs-check` | Verify generated docs are up to date |
-
-**Environment variables:**
-
-- `JUST_MAIN_PACKAGE` - main package path (default: `main.go`)
-- `JUST_COVERAGE_DIR` - coverage output directory (default: `.coverage`)
-- `JUST_GO_FMT_EXCLUDES` - extra `find` exclusions for `fmt` / `fmt-check`
-  (e.g., `! -path '*/vendor/*'`)
-- `JUST_DOCS_DIR` - generated docs output directory (default: `docs/gen`)
-
-### bats.just
-
-| Recipe | Description |
-|---|---|
-| `deps` | Install BATS and shfmt |
-| `fmt` | Format .bats files |
-| `fmt-check` | Check .bats formatting |
-| `test` | Run BATS integration tests |
-
 ### docs.just
 
-| Recipe | Description |
-|---|---|
-| `deps` | Install global dependencies (redocly) |
-| `build` | Build documentation site |
-| `start` | Start dev server |
-| `serve` | Preview built site |
-| `clean` | Clean build directory |
-| `bump version` | Create new docs version |
-| `deploy` | Build and deploy |
-| `fmt` | Format docs with prettier |
-| `fmt-check` | Check docs formatting |
-| `generate` | Generate OpenAPI docs |
+| Recipe         | Description                           |
+| -------------- | ------------------------------------- |
+| `deps`         | Install global dependencies (redocly) |
+| `build`        | Build documentation site              |
+| `start`        | Start dev server                      |
+| `serve`        | Preview built site                    |
+| `clean`        | Clean build directory                 |
+| `bump version` | Create new docs version               |
+| `deploy`       | Build and deploy                      |
+| `fmt`          | Format docs with prettier             |
+| `fmt-check`    | Check docs formatting                 |
+| `generate`     | Generate OpenAPI docs                 |
 
 **Environment variables:**
 
@@ -142,10 +106,10 @@ Modules not yet moved are documented inline below.
 
 ### docker.just
 
-| Recipe | Description |
-|---|---|
-| `build` | Build the Docker image |
-| `push` | Push the Docker image to the registry |
+| Recipe  | Description                           |
+| ------- | ------------------------------------- |
+| `build` | Build the Docker image                |
+| `push`  | Push the Docker image to the registry |
 
 **Environment variables:**
 
@@ -161,10 +125,10 @@ COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/re
 
 ### just.just
 
-| Recipe | Description |
-|---|---|
-| `fmt` | Reformat justfiles with canonical style |
-| `fmt-check` | Check justfile formatting |
+| Recipe      | Description                             |
+| ----------- | --------------------------------------- |
+| `fmt`       | Reformat justfiles with canonical style |
+| `fmt-check` | Check justfile formatting               |
 
 ## 🤝 Contributing
 
