@@ -5,7 +5,7 @@ Formats every `.md` file in the repository with
 [uvx](https://docs.astral.sh/uv/).
 
 Use this for repos that keep documentation at the root. Use
-[`docs.just`](../README.md#docsjust) for Docusaurus sites under `docs/`.
+[`docusaurus.just`](../docusaurus/README.md) for Docusaurus sites under `docs/`.
 
 ## 📦 Usage
 
@@ -61,7 +61,7 @@ Excluded by default: `node_modules/`, `.worktrees/`, `.claude/`, and `.just/`.
 them on `openspec update` — reformatting them creates a loop where CI and the
 generator fight each other.
 
-**⚠️ Do not point `md.just` and `docs.just` at the same files.** They use
+**⚠️ Do not point `md.just` and `docusaurus.just` at the same files.** They use
 different formatters (mdformat vs prettier) and produce different output, so
 each would undo the other. A repo may use both, but on disjoint paths. Since
 `md.just` scans the whole repo, a repo with a Docusaurus site under `docs/` must
