@@ -85,4 +85,4 @@ react-fmt-check:
 # Generate TypeScript SDK from OpenAPI spec
 [group('codegen')]
 react-generate:
-    cd {{ react_dir }} && npx orval
+    cd {{ react_dir }} && bunx orval

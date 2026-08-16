@@ -34,8 +34,7 @@ _docusaurus-bun-install:
 
 # Install documentation tooling
 [group('setup')]
-docusaurus-deps:
-    cd {{ docusaurus_dir }} && bun install -g @redocly/cli
+docusaurus-deps: _docusaurus-bun-install
 
 # Build the site
 [group('build')]
