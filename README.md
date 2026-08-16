@@ -92,11 +92,10 @@ Modules are moving into their own directories, each documenting itself:
 | `docusaurus` | Docusaurus site build, serve, deploy, formatting  | [docusaurus/README.md](docusaurus/README.md) |
 | `go`         | Go build, test, coverage gate, format, lint       | [go/README.md](go/README.md)                 |
 | `md`         | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md)                 |
+| `just`       | Justfile formatting                               | [just/README.md](just/README.md)             |
 | `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
 
-Modules not yet moved are documented inline below.
-
-### just.just
+## just.just
 
 | Recipe      | Description                             |
 | ----------- | --------------------------------------- |

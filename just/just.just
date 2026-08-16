@@ -18,7 +18,7 @@
 
 # Reformat justfiles with canonical style
 [group('fmt')]
-fmt:
+just-fmt:
     #!/usr/bin/env bash
     set -euo pipefail
     find . -type f \( -name '*.just' -o -name 'justfile' \) ! -path './.worktrees/*' ! -path './.claude/*' ! -path '*/.just/*' | while read -r f; do
@@ -27,7 +27,7 @@ fmt:
 
 # Check justfile formatting
 [group('fmt')]
-fmt-check:
+just-fmt-check:
     #!/usr/bin/env bash
     set -euo pipefail
     failed=0

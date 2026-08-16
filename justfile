@@ -2,8 +2,8 @@
 
 # Check justfile formatting
 test:
-    just --justfile just.just --working-directory . fmt-check
+    just --justfile just/just.just --working-directory . just-fmt-check
 
 # Format and lint before committing
 ready:
-    just --justfile just.just --working-directory . fmt
+    just --justfile just/just.just --working-directory . just-fmt
