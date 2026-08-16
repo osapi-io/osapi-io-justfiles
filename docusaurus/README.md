@@ -20,7 +20,7 @@ Then:
 
 ```bash
 just fetch                    # Download the shared recipe file
-just docusaurus-deps          # Install documentation tooling
+just docusaurus-deps          # Install the site's dependencies
 just docusaurus-start         # Development server
 just docusaurus-build         # Build the site
 just docusaurus-serve         # Serve the built site
