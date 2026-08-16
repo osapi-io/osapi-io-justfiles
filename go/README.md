@@ -56,8 +56,9 @@ import? '.just/remote/go.just'
 go_coverage_target := "99.9"
 ```
 
-The assignment is in scope when just parses the file, so `just go-unit-cov-check`
-and `just test` agree, and a one-off override works on the command line:
+The assignment is in scope when just parses the file, so
+`just go-unit-cov-check` and `just test` agree, and a one-off override works on
+the command line:
 
 ```bash
 just go_coverage_target=95 go-unit-cov-check

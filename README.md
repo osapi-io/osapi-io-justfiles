@@ -55,9 +55,9 @@ Add `.just/` to `.gitignore`:
 
 ### Lazy tool dependencies
 
-Each recipe installs its own tool dependencies on first use via private `_*-deps`
-recipes. There is no need to run `deps` before using a recipe — tools are
-pulled automatically. `go-deps` is a convenience that installs all tools
+Each recipe installs its own tool dependencies on first use via private
+`_*-deps` recipes. There is no need to run `deps` before using a recipe — tools
+are pulled automatically. `go-deps` is a convenience that installs all tools
 upfront.
 
 Projects define a top-level `deps` recipe that calls each module's `deps`:
@@ -72,8 +72,8 @@ deps:
 ### Documentation generation
 
 `go-docs` and `go-docs-check` use
-[gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown
-file per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
+[gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown file
+per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
 `go-docs-check` is **not** included in `go-test` by default — add it to your
 project's `test` recipe where needed:
 
@@ -94,13 +94,6 @@ Modules are moving into their own directories, each documenting itself:
 | `md`         | Repository markdown formatting (mdformat via uvx) | [md/README.md](md/README.md)                 |
 | `just`       | Justfile formatting                               | [just/README.md](just/README.md)             |
 | `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
-
-## just.just
-
-| Recipe      | Description                             |
-| ----------- | --------------------------------------- |
-| `fmt`       | Reformat justfiles with canonical style |
-| `fmt-check` | Check justfile formatting               |
 
 ## 🤝 Contributing
 
