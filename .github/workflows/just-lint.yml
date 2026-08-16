@@ -15,4 +15,4 @@ jobs:
       - name: Install just
         uses: extractions/setup-just@v4
       - name: Lint justfiles
-        run: just --justfile just.just --working-directory . fmt-check
+        run: just --justfile just/just.just --working-directory . just-fmt-check
