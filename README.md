@@ -8,7 +8,7 @@
 
 A justfile used by osapi-io projects.
 
-## 📦 Usage
+## 🎯 Usage
 
 Shared recipes are consumed with `import?`. Each module is a single recipe file
 whose recipes and variables are prefixed with the module name, fetched from this
@@ -83,9 +83,9 @@ test:
     just go-docs-check
 ```
 
-## ✨ Available Recipes
+## 📖 Documentation
 
-Modules are moving into their own directories, each documenting itself:
+Each module lives in its own directory and documents itself:
 
 | Module       | Description                                       | Docs                                         |
 | ------------ | ------------------------------------------------- | -------------------------------------------- |
