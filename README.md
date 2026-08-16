@@ -10,33 +10,41 @@ A justfile used by osapi-io projects.
 
 ## 📦 Usage
 
-Shared recipes are consumed as
-[just modules](https://just.systems/man/en/modules.html). Each module has a
-shim file (`*.mod.just`) that sets the working directory and imports the actual
-recipe file. Both are fetched from this repo.
+Shared recipes are consumed with `import?`. Each module is a single recipe file
+whose recipes and variables are prefixed with the module name, fetched from this
+repo into `.just/remote/`.
 
 ```just
-mod go '.just/remote/go.mod.just'
-mod bats '.just/remote/bats.mod.just'
+import? '.just/remote/go.just'
+import? '.just/remote/md.just'
 
 # Fetch shared justfiles from osapi-justfiles
 fetch:
     mkdir -p .just/remote
-    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/go.mod.just -o .just/remote/go.mod.just
-    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/go.just -o .just/remote/go.just
-    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/bats.mod.just -o .just/remote/bats.mod.just
-    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/bats.just -o .just/remote/bats.just
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/go/go.just -o .just/remote/go.just
+    curl -sSfL https://raw.githubusercontent.com/osapi-io/osapi-justfiles/refs/heads/main/md/md.just -o .just/remote/md.just
 ```
 
 Then run `just fetch` to download the shared recipes, and they become available
-under their module namespace:
+by their prefixed names:
 
 ```bash
-$ just fetch        # Download shared justfiles
-$ just go::deps     # Install all Go tool dependencies
-$ just go::test     # Run all Go checks
-$ just go::fmt      # Auto-format code
-$ just bats::test   # Run BATS integration tests
+$ just fetch          # Download shared justfiles
+$ just go-deps        # Install all Go tool dependencies
+$ just go-test        # Run all Go checks
+$ just go-fmt         # Auto-format code
+$ just md-fmt-check   # Check markdown formatting
+```
+
+A module ships defaults for anything that varies by repository. To use a
+different value, set `allow-duplicate-variables` and assign it again:
+
+```just
+set allow-duplicate-variables
+
+import? '.just/remote/go.just'
+
+go_coverage_target := "99.9"
 ```
 
 Add `.just/` to `.gitignore`:
@@ -49,27 +57,30 @@ Add `.just/` to `.gitignore`:
 
 Each recipe installs its own tool dependencies on first use via private `_*-deps`
 recipes. There is no need to run `deps` before using a recipe — tools are
-pulled automatically. `go::deps` is a convenience that installs all tools
+pulled automatically. `go-deps` is a convenience that installs all tools
 upfront.
 
 Projects define a top-level `deps` recipe that calls each module's `deps`:
 
 ```just
 # Install all dependencies
-deps: go::deps bats::deps
+deps:
+    just go-deps
     go get -tool github.com/golang/mock/mockgen
 ```
 
 ### Documentation generation
 
-`go::docs` and `go::docs-check` use
+`go-docs` and `go-docs-check` use
 [gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown
 file per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
-`docs-check` is **not** included in `go::test` by default — add it to your
+`go-docs-check` is **not** included in `go-test` by default — add it to your
 project's `test` recipe where needed:
 
 ```just
-test: go::test go::docs-check bats::test
+test:
+    just go-test
+    just go-docs-check
 ```
 
 ## ✨ Available Recipes
@@ -84,25 +95,6 @@ Modules are moving into their own directories, each documenting itself:
 | `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
 
 Modules not yet moved are documented inline below.
-
-### docker.just
-
-| Recipe  | Description                           |
-| ------- | ------------------------------------- |
-| `build` | Build the Docker image                |
-| `push`  | Push the Docker image to the registry |
-
-**Environment variables:**
-
-- `JUST_DOCKER_IMAGE` - image name (default: `osapi-justfiles`)
-- `JUST_DOCKER_TAG` - image tag (default: `latest`)
-
-Consuming projects can copy `.just` files directly from the image instead of
-using `curl`:
-
-```dockerfile
-COPY --from=registry.gitlab.com/osapi-io/osapi-justfiles:latest /*.just .just/remote/
-```
 
 ### just.just
 
