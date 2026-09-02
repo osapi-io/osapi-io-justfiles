@@ -10,10 +10,11 @@ setup, the conventions recipes follow, and the pull request workflow.
   interaction in this repo.
 
 - **Design records** — The conventions binding this repository are specified in
-  [osapi-io/specs](https://github.com/osapi-io/specs) under `osapi-justfiles/`,
-  whose `.specify/memory/` is the standing record. Design reasoning for a change
-  lives there too, not here — a design document kept in this repository goes
-  stale the moment the code moves past it, with nothing to catch the drift.
+  [osapi-io/specs](https://github.com/osapi-io/specs) under
+  `components/osapi-justfiles/`, whose `.specify/memory/` is the standing
+  record. Design reasoning for a change lives there too, not here — a design
+  document kept in this repository goes stale the moment the code moves past it,
+  with nothing to catch the drift.
 
 - **Check existing work** — Is there an existing PR? Are there issues discussing
   the change you want to make? Please make sure you consider/address these
