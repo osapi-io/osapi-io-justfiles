@@ -25,20 +25,19 @@ treating the failure as real.
 
 ## Where the rules come from
 
-The architecture is specified in
-[osapi-io/specs](https://github.com/osapi-io/specs) under
-`openspec/specs/justfiles/`. When a convention here and the specification
-disagree, the specification wins — say so rather than following the code.
+@CONTRIBUTING.md names the specification under "Before you start"; its standing
+record is that project's `.specify/memory/`. When a convention here and the
+specification disagree, the specification wins — say so rather than following
+the code.
 
 A change that alters how modules are structured, consumed, or named is a change
 to that specification first, and to this repository second.
 
 ## A shared recipe cannot be tested here
 
-Every repository in the organization fetches these files from `main`. Nothing in
-this repository exercises a recipe end to end, so "it looks right" is not
-evidence. Test against a real consumer by pointing its `fetch` recipe at your
-branch, and say in the PR which consumer you ran.
+Nothing in this repository exercises a recipe end to end, so "it looks right" is
+not evidence. @CONTRIBUTING.md gives the procedure under "Making changes"; run
+it, and say in the PR which consumer you ran.
 
 ## Repository structure
 
