@@ -25,13 +25,9 @@ treating the failure as real.
 
 ## Where the rules come from
 
-@CONTRIBUTING.md names the specification under "Before you start"; its standing
-record is that project's `.specify/memory/`. When a convention here and the
-specification disagree, the specification wins — say so rather than following
-the code.
-
-A change that alters how modules are structured, consumed, or named is a change
-to that specification first, and to this repository second.
+@CONTRIBUTING.md names the specification under "Before you start". When a
+convention here and the specification disagree, the specification wins — say so
+rather than following the code.
 
 ## A shared recipe cannot be tested here
 
