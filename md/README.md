@@ -57,9 +57,9 @@ is missing.
 
 Excluded by default: `node_modules/`, `.worktrees/`, `.claude/`, and `.just/`.
 
-`.claude/` is skipped because openspec generates those files and regenerates
-them on `openspec update` — reformatting them creates a loop where CI and the
-generator fight each other.
+`.claude/` is skipped because those files are generated, and their generator
+rewrites them — reformatting them creates a loop where CI and the generator
+fight each other.
 
 **⚠️ Do not point `md.just` and `docusaurus.just` at the same files.** They use
 different formatters (mdformat vs prettier) and produce different output, so

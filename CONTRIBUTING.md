@@ -18,9 +18,9 @@ setup, the conventions recipes follow, and the pull request workflow.
   can be discussed before you invest your time in a PR.
 
 The architecture these recipes follow is specified in
-[osapi-io/specs](https://github.com/osapi-io/specs) under
-`openspec/specs/justfiles/`. That is the authority for how modules are
-distributed, consumed, named, and documented.
+[osapi-io/specs](https://github.com/osapi-io/specs) under `osapi-justfiles/`.
+That is the authority for how modules are distributed, consumed, named, and
+documented.
 
 ## Prerequisites
 

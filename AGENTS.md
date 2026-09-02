@@ -26,9 +26,10 @@ treating the failure as real.
 ## Where the rules come from
 
 The architecture is specified in
-[osapi-io/specs](https://github.com/osapi-io/specs) under
-`openspec/specs/justfiles/`. When a convention here and the specification
-disagree, the specification wins — say so rather than following the code.
+[osapi-io/specs](https://github.com/osapi-io/specs) under `osapi-justfiles/`,
+whose `.specify/memory/` is the standing record. When a convention here and the
+specification disagree, the specification wins — say so rather than following
+the code.
 
 A change that alters how modules are structured, consumed, or named is a change
 to that specification first, and to this repository second.
