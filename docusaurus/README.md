@@ -2,7 +2,7 @@
 
 Builds, serves, deploys, and formats a [Docusaurus](https://docusaurus.io) site.
 
-## 📦 Usage
+## Usage
 
 `docusaurus.just` is consumed with `import?` rather than `mod?`. Its recipes are
 flat and prefixed, so it needs no `.mod.just` shim.
@@ -32,7 +32,7 @@ just docusaurus-generate      # Regenerate the OpenAPI reference pages
 just docusaurus-bump 1.2.0    # Cut a versioned snapshot
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable          | Default     | Purpose                    |
 | ----------------- | ----------- | -------------------------- |
@@ -50,7 +50,7 @@ import? '.just/remote/docusaurus.just'
 docusaurus_port := "3002"
 ```
 
-## 🖊️ Formatting
+## Formatting
 
 This module formats its own directory, and the [`md`](../md/README.md) module
 excludes it. Docusaurus content contains MDX and component syntax that mdformat
@@ -59,6 +59,6 @@ cannot parse, so prettier owns those files.
 Set `md_site_dir` to the same value in repositories that use both, so the
 exclusion matches where the site actually is.
 
-## 📄 License
+## License
 
 The [MIT](../LICENSE) License.

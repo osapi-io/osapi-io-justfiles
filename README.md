@@ -8,7 +8,7 @@
 
 A justfile used by osapi-io projects.
 
-## 🎯 Usage
+## Usage
 
 Shared recipes are consumed with `import?`. Each module is a single recipe file
 whose recipes and variables are prefixed with the module name, fetched from this
@@ -83,7 +83,7 @@ test:
     just go-docs-check
 ```
 
-## 📖 Documentation
+## Documentation
 
 Each module lives in its own directory and documents itself:
 
@@ -95,11 +95,11 @@ Each module lives in its own directory and documents itself:
 | `just`       | Justfile formatting                               | [just/README.md](just/README.md)             |
 | `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
 
-## 🤝 Contributing
+## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for prerequisites, setup,
 conventions, and the PR workflow.
 
-## 📄 License
+## License
 
 The [MIT](LICENSE) License.
