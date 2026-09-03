@@ -19,7 +19,7 @@ fetch:
 ```
 
 `react_dir` defaults to `.`, the repository root. Override it when the
-application lives elsewhere — see Configuration below.
+application lives elsewhere. See Configuration below.
 
 Then:
 

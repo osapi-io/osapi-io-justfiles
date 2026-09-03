@@ -56,7 +56,7 @@ Add `.just/` to `.gitignore`:
 ### Lazy tool dependencies
 
 Each recipe installs its own tool dependencies on first use via private
-`_*-deps` recipes. There is no need to run `deps` before using a recipe — tools
+`_*-deps` recipes. There is no need to run `deps` before using a recipe. Tools
 are pulled automatically. `go-deps` is a convenience that installs all tools
 upfront.
 
@@ -74,7 +74,7 @@ deps:
 `go-docs` and `go-docs-check` use
 [gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown file
 per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
-`go-docs-check` is **not** included in `go-test` by default — add it to your
+`go-docs-check` is **not** included in `go-test` by default. Add it to your
 project's `test` recipe where needed:
 
 ```just

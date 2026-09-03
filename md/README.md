@@ -40,8 +40,8 @@ just md-fmt-check   # Check formatting (non-zero exit on drift)
 ## 📋 Requirements
 
 [uv](https://docs.astral.sh/uv/) only. Nothing is installed into or committed to
-the consuming repo — `uvx` runs mdformat from a cache, versions are pinned in
-the recipe, and formatting options are passed on the command line. There is no
+the consuming repo. `uvx` runs mdformat from a cache, versions are pinned in the
+recipe, and formatting options are passed on the command line. There is no
 `package.json`, lockfile, or config file to maintain.
 
 The `mdformat-gfm` plugin is not optional. Without it mdformat is
@@ -58,7 +58,7 @@ is missing.
 Excluded by default: `node_modules/`, `.worktrees/`, `.claude/`, and `.just/`.
 
 `.claude/` is skipped because those files are generated, and their generator
-rewrites them — reformatting them creates a loop where CI and the generator
+rewrites them, and reformatting them creates a loop where CI and the generator
 fight each other.
 
 **⚠️ Do not point `md.just` and `docusaurus.just` at the same files.** They use
