@@ -8,7 +8,7 @@
 
 A justfile used by osapi-io projects.
 
-## 🎯 Usage
+## Usage
 
 Shared recipes are consumed with `import?`. Each module is a single recipe file
 whose recipes and variables are prefixed with the module name, fetched from this
@@ -56,7 +56,7 @@ Add `.just/` to `.gitignore`:
 ### Lazy tool dependencies
 
 Each recipe installs its own tool dependencies on first use via private
-`_*-deps` recipes. There is no need to run `deps` before using a recipe — tools
+`_*-deps` recipes. There is no need to run `deps` before using a recipe. Tools
 are pulled automatically. `go-deps` is a convenience that installs all tools
 upfront.
 
@@ -74,7 +74,7 @@ deps:
 `go-docs` and `go-docs-check` use
 [gomarkdoc](https://github.com/princjef/gomarkdoc) to generate one markdown file
 per package into `JUST_DOCS_DIR`, skipping `mocks` and `main` packages.
-`go-docs-check` is **not** included in `go-test` by default — add it to your
+`go-docs-check` is **not** included in `go-test` by default. Add it to your
 project's `test` recipe where needed:
 
 ```just
@@ -83,7 +83,7 @@ test:
     just go-docs-check
 ```
 
-## 📖 Documentation
+## Documentation
 
 Each module lives in its own directory and documents itself:
 
@@ -95,11 +95,11 @@ Each module lives in its own directory and documents itself:
 | `just`       | Justfile formatting                               | [just/README.md](just/README.md)             |
 | `react`      | React app build, lint, format, SDK codegen (Bun)  | [react/README.md](react/README.md)           |
 
-## 🤝 Contributing
+## Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for prerequisites, setup,
 conventions, and the PR workflow.
 
-## 📄 License
+## License
 
 The [MIT](LICENSE) License.

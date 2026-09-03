@@ -5,7 +5,7 @@ Builds, tests, formats, lints, and measures coverage for a Go project using
 [golines](https://github.com/segmentio/golines),
 [golangci-lint](https://golangci-lint.run), and `go test`.
 
-## 📦 Usage
+## Usage
 
 `go.just` is consumed with `import?` rather than `mod?`. Its recipes are flat
 and prefixed, so it needs no `.mod.just` shim:
@@ -35,7 +35,7 @@ just go-vet                # Run golangci-lint
 just go-generate           # Run go generate
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable             | Default     | Purpose                                  |
 | -------------------- | ----------- | ---------------------------------------- |
@@ -68,6 +68,6 @@ Do not use `export` for this. It reaches child processes but not the parse of
 its own file, so a recipe run by name would use the default while the same
 recipe reached through another recipe used the override.
 
-## 📄 License
+## License
 
 The [MIT](../LICENSE) License.

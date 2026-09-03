@@ -4,7 +4,7 @@ Builds, lints, formats, and serves a React application with
 [Bun](https://bun.sh), [Prettier](https://prettier.io),
 [ESLint](https://eslint.org), and [orval](https://orval.dev).
 
-## 📦 Usage
+## Usage
 
 `react.just` is consumed with `import?` rather than `mod?`. Its recipes are flat
 and prefixed, so it needs no `.mod.just` shim.
@@ -19,7 +19,7 @@ fetch:
 ```
 
 `react_dir` defaults to `.`, the repository root. Override it when the
-application lives elsewhere — see Configuration below.
+application lives elsewhere. See Configuration below.
 
 Then:
 
@@ -35,7 +35,7 @@ just react-test         # fmt-check, lint, build
 just react-generate     # Regenerate the TypeScript SDK with orval
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable            | Default                 | Purpose                         |
 | ------------------- | ----------------------- | ------------------------------- |
@@ -52,6 +52,6 @@ import? '.just/remote/react.just'
 react_dir := "ui"
 ```
 
-## 📄 License
+## License
 
 The [MIT](../LICENSE) License.

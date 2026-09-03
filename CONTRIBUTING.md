@@ -9,18 +9,18 @@ setup, the conventions recipes follow, and the pull request workflow.
 - Read the [Code of Conduct](CODE_OF_CONDUCT.md). It applies to every
   interaction in this repo.
 
-- **Design records** — The conventions binding this repository are specified in
+- **Design records.** The conventions binding this repository are specified in
   [osapi-io/specs](https://github.com/osapi-io/specs) under
   `components/osapi-justfiles/`, whose `.specify/memory/` is the standing
-  record. Design reasoning for a change lives there too, not here — a design
-  document kept in this repository goes stale the moment the code moves past it,
-  with nothing to catch the drift.
+  record. Design reasoning for a change lives there, not here. A design document
+  kept in this repository goes stale the moment the code moves past it, and
+  nothing catches the drift.
 
-- **Check existing work** — Is there an existing PR? Are there issues discussing
+- **Check existing work.** Is there an existing PR? Are there issues discussing
   the change you want to make? Please make sure you consider/address these
   discussions in your work.
 
-- **Backwards compatibility** — Every repository in the organization fetches
+- **Backwards compatibility.** Every repository in the organization fetches
   these files from `main`, so a breaking change breaks them all at once. It is
   much more likely that your change will be merged if it is backwards
   compatible. If it cannot be, consider opening an issue first so the migration
@@ -28,8 +28,8 @@ setup, the conventions recipes follow, and the pull request workflow.
 
 ## Prerequisites
 
-- **[just]** — Task runner. Install with `brew install mise` and let mise
-  provide it, or `brew install just` directly.
+- **[just].** Task runner. Install with `brew install mise` and let mise provide
+  it, or `brew install just` directly.
 
 Individual modules require the tools they invoke. `md` needs [uv]; `go` needs a
 Go toolchain. Each module's README lists its own requirements.
@@ -43,7 +43,7 @@ marketplace:
 /plugin install commit-commands@claude-plugins-official
 ```
 
-- **commit-commands** — provides `/commit` and `/commit-push-pr` slash commands
+- **commit-commands.** provides `/commit` and `/commit-push-pr` slash commands
   that follow the project's commit conventions automatically.
 
 **Do not use superpowers.** Spec Kit governs specification, planning, and
@@ -65,7 +65,7 @@ Then run that project's recipes to verify the behavior. There is no way to test
 a shared recipe except against a real consumer.
 
 Note that `raw.githubusercontent.com` caches for several minutes. After merging,
-a consumer's CI can still fetch the previous version — re-run it rather than
+a consumer's CI can still fetch the previous version. Re-run it rather than
 assuming the change is broken.
 
 ## Recipe conventions
@@ -78,7 +78,7 @@ assuming the change is broken.
 - Use `[private]` for helper recipes not meant to be called directly.
 - Use kebab-case for recipe names (`fmt-check`, `unit-cov`).
 - Use a `#!/usr/bin/env bash` shebang for multi-line shell blocks.
-- Parameters use just syntax — `recipe param:`, not shell arguments.
+- Parameters use just syntax: `recipe param:`, not shell arguments.
 
 ### Variables
 
@@ -89,7 +89,7 @@ assuming the change is broken.
   This is a requirement of the `justfiles` specification, not a preference.
 
 Modules consumed by import share one namespace with the consuming justfile, so
-prefix their variables with the module name as well — a generic name like `wrap`
+prefix their variables with the module name as well. A generic name like `wrap`
 silently overwrites any other `wrap` in scope.
 
 ### Dependencies between recipes
@@ -141,20 +141,20 @@ be reasonable to split it in a few). Git squash and rebase is your friend!
 
 ## Submitting a PR
 
-- **Describe your changes** — Ensure that you provide a comprehensive
-  description of your changes.
-- **Issue/PR links** — Link any previous work such as related issues or PRs.
+- **Describe your changes.** Say what changed and why. A reviewer should not
+  have to read the diff to learn the reason for it.
+- **Issue/PR links.** Link any previous work such as related issues or PRs.
   Please describe how your changes differ to/extend this work.
-- **Name the consumers you tested against** — a shared recipe that was never run
+- **Name the consumers you tested against.** a shared recipe that was never run
   by a real project has not been tested.
-- **Draft PRs** — If your changes are incomplete, but you would like to discuss
+- **Draft PRs.** If your changes are incomplete, but you would like to discuss
   them, open the PR as a draft and add a comment to start a discussion. Using
   comments rather than the PR description allows the description to be updated
   later while preserving any discussions.
 
 ## AI usage
 
-All contributions are subject to the [AI Usage Policy](AI_POLICY.md) — disclose
+All contributions are subject to the [AI Usage Policy](AI_POLICY.md). Disclose
 the tool you used, and make sure you can explain what your change does without
 the aid of AI tools.
 
@@ -168,7 +168,7 @@ answer questions.
 
 > I'm stuck, where can I get help?
 
-If you have questions, feel free to open a [Discussion] on GitHub.
+If you have questions, open a [Discussion] on GitHub.
 
 [claude code]: https://claude.ai/code
 [conventional commits]: https://www.conventionalcommits.org

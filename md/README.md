@@ -7,7 +7,7 @@ Formats every `.md` file in the repository with
 Use this for repos that keep documentation at the root. Use
 [`docusaurus.just`](../docusaurus/README.md) for Docusaurus sites under `docs/`.
 
-## 📦 Usage
+## Usage
 
 Unlike the other modules, `md.just` is consumed with `import?` rather than
 `mod?`. Its recipes are flat and prefixed, so it needs no `.mod.just` shim and
@@ -30,18 +30,18 @@ just md-fmt         # Reformat all markdown
 just md-fmt-check   # Check formatting (non-zero exit on drift)
 ```
 
-## ✨ Recipes
+## Recipes
 
 | Recipe         | Description                                |
 | -------------- | ------------------------------------------ |
 | `md-fmt`       | Reformat repository markdown with mdformat |
 | `md-fmt-check` | Check repository markdown formatting       |
 
-## 📋 Requirements
+## Requirements
 
 [uv](https://docs.astral.sh/uv/) only. Nothing is installed into or committed to
-the consuming repo — `uvx` runs mdformat from a cache, versions are pinned in
-the recipe, and formatting options are passed on the command line. There is no
+the consuming repo. `uvx` runs mdformat from a cache, versions are pinned in the
+recipe, and formatting options are passed on the command line. There is no
 `package.json`, lockfile, or config file to maintain.
 
 The `mdformat-gfm` plugin is not optional. Without it mdformat is
@@ -53,12 +53,12 @@ not exist and mdformat exits 2 with `unrecognized arguments`. Pinning makes the
 behavior identical on a laptop and in CI, and uv downloads the interpreter if it
 is missing.
 
-## 🚫 Exclusions
+## Exclusions
 
 Excluded by default: `node_modules/`, `.worktrees/`, `.claude/`, and `.just/`.
 
 `.claude/` is skipped because those files are generated, and their generator
-rewrites them — reformatting them creates a loop where CI and the generator
+rewrites them, and reformatting them creates a loop where CI and the generator
 fight each other.
 
 **⚠️ Do not point `md.just` and `docusaurus.just` at the same files.** They use
@@ -79,7 +79,7 @@ Note that mdformat does not understand GitHub alert syntax (`> [!WARNING]`) and
 will reflow it into a plain blockquote. Use bold text for callouts in repos
 formatted by this module.
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable            | Default | Description                                   |
 | ------------------- | ------- | --------------------------------------------- |
