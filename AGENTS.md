@@ -47,6 +47,16 @@ it, and say in the PR which consumer you ran.
 Two consumption styles exist. Both are specified; neither is a mistake to be
 corrected on sight.
 
+## Commit trailer
+
+When committing via Claude Code, end the message with:
+
+```
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
 ## Task tracking
 
 **Do not use superpowers.** Spec Kit governs specification, planning, and
